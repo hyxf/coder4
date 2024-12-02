@@ -19,6 +19,12 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": [
+      {
+        "title": "Coder4",
+        "properties": {}
+      }
+    ],
     "commands": [
       {
         "command": "coder4.file.layout",
