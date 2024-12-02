@@ -21,8 +21,72 @@
   "contributes": {
     "commands": [
       {
-        "command": "coder4.helloWorld",
-        "title": "Hello World"
+        "command": "coder4.file.layout",
+        "title": "Generate Layout",
+        "category": "coder4"
+      },
+      {
+        "command": "coder4.file.component",
+        "title": "Generate Component",
+        "category": "coder4"
+      },
+      {
+        "command": "coder4.file.loading",
+        "title": "Generate Loading",
+        "category": "coder4"
+      },
+      {
+        "command": "coder4.file.page",
+        "title": "Generate Page",
+        "category": "coder4"
+      },
+      {
+        "command": "coder4.terminal.project",
+        "title": "Create Project",
+        "category": "coder4"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "coder4.submenu",
+        "label": "Coder4 File Generator"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "submenu": "coder4.submenu",
+          "group": "2_workspace",
+          "when": "explorerViewletFocus && explorerResourceIsFolder && !explorerResourceIsRoot"
+        }
+      ],
+      "coder4.submenu": [
+        {
+          "command": "coder4.file.layout",
+          "group": "1_0"
+        },
+        {
+          "command": "coder4.file.component",
+          "group": "1_0"
+        },
+        {
+          "command": "coder4.file.loading",
+          "group": "1_0"
+        },
+        {
+          "command": "coder4.file.page",
+          "group": "1_0"
+        }
+      ]
+    },
+    "snippets": [
+      {
+        "language": "python",
+        "path": "./snippets/base.json"
+      },
+      {
+        "language": "python",
+        "path": "./snippets/comprehension.json"
       }
     ]
   },
