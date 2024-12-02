@@ -5,6 +5,7 @@
   "version": "0.0.1",
   "author": "BillChiu",
   "license": "MIT",
+  "publisher": "BillChiu",
   "engines": {
     "vscode": "^1.95.0"
   },
@@ -14,6 +15,7 @@
     "Other"
   ],
   "activationEvents": [
+    "onStartupFinished"
   ],
   "main": "./out/extension.js",
   "contributes": {
