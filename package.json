@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "author": "BillChiu",
   "license": "MIT",
-  "publisher": "BillChiu",
+  "publisher": "billchiu",
   "engines": {
     "vscode": "^1.95.0"
   },
@@ -110,6 +110,9 @@
       }
     ]
   },
+  "extensionPack": [
+    "ms-python.python"
+  ],
   "scripts": {
     "vscode:prepublish": "yarn run compile",
     "compile": "tsc -p ./",
