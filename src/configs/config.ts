@@ -1,5 +1,6 @@
 import { WorkspaceConfiguration } from "vscode";
-import { EXTENSION } from "./constants";
+
+export const EXTENSION: string = 'py';
 
 export class Config {
     extension: string;
