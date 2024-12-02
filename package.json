@@ -22,7 +22,21 @@
     "configuration": [
       {
         "title": "Coder4",
-        "properties": {}
+        "properties": {
+          "coder4.files.extension": {
+            "type": "string",
+            "default": "py",
+            "enum": [
+              "py",
+              "js",
+              "jsx",
+              "ts",
+              "tsx"
+            ],
+            "scope": "resource",
+            "description": "Sets the default extension for the generated files"
+          }
+        }
       }
     ],
     "commands": [
