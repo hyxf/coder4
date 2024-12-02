@@ -1,24 +1,11 @@
 import { access, existsSync, mkdirSync, open, writeFile } from "fs";
 import { dirname, join } from "path";
 import { Uri, window, workspace } from "vscode";
+import { Config } from "../configs/config";
 
 export class FileController {
-
+    constructor(private readonly config: Config) { }
 }
-
-export const getPath = async (
-    prompt: string,
-    placeHolder: string,
-    currentPath: string,
-    validate: (path: string) => string | undefined,
-): Promise<string | undefined> => {
-    return await window.showInputBox({
-        prompt,
-        placeHolder,
-        value: currentPath,
-        validateInput: validate,
-    });
-};
 
 export const getRelativePath = async (path: string): Promise<string> => {
     return workspace.asRelativePath(path);
