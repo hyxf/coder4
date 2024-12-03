@@ -27,22 +27,7 @@ export const createDir = async (folder: string, path: string): Promise<void> => 
     await workspace.fs.createDirectory(newDirectoryUri);
 };
 
-export const saveFile = async (
-    path: string,
-    filename: string,
-    data: string,
-): Promise<void> => {
-    let folder: string = '';
-
-    if (workspace.workspaceFolders) {
-        folder = workspace.workspaceFolders[0].uri.fsPath;
-    } else {
-        window.showErrorMessage('The file has not been created!');
-        return;
-    }
-
-    const file = join(folder, path, filename);
-
+export const saveFileWithContent = async (file: string, data: string): Promise<void> => {
     if (!existsSync(dirname(file))) {
         mkdirSync(dirname(file), { recursive: true });
     }
@@ -72,6 +57,24 @@ export const saveFile = async (
             window.showWarningMessage('Name already exist!');
         }
     });
+};
+
+export const saveFile = async (
+    path: string,
+    filename: string,
+    data: string,
+): Promise<void> => {
+    let folder: string = '';
+
+    if (workspace.workspaceFolders) {
+        folder = workspace.workspaceFolders[0].uri.fsPath;
+    } else {
+        window.showErrorMessage('The file has not been created!');
+        return;
+    }
+
+    const file = join(folder, path, filename);
+    await saveFileWithContent(file, data);
 };
 
 

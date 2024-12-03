@@ -1,7 +1,8 @@
-import { Uri, window } from 'vscode';
+import { join } from 'path';
+import { Uri } from 'vscode';
 import { Config } from "../configs/config";
 import { getName, getPath } from "../helper/dialog.helper";
-import { createDir, getRelativePath, saveFile } from "../helper/filesystem.helper";
+import { getRelativePath, saveFile, saveFileWithContent } from "../helper/filesystem.helper";
 import { dasherize } from '../helper/inflector.helper';
 
 
@@ -9,26 +10,28 @@ export class FileController {
     constructor(private readonly config: Config) { }
 
     async newPythonPackage(path?: Uri): Promise<void> {
-
         const folder = await getPath(
             'New Python Package',
             'name',
             "",
-            (pkg: string) => {
-                if (!/^(?!\/)[^\sÀ-ÿ]+?$/.test(pkg)) {
-                    return 'The package name must be a valid name';
-                }
-                return;
-            },
+            (pkg: string) =>
+                !/^(?!\/)[^\sÀ-ÿ]+?$/.test(pkg)
+                    ? 'The package name must be a valid name'
+                    : undefined
         );
 
-        if (!path && !folder) {
+        const rootPath = path?.fsPath || "";
+        const packageFolder = folder || "";
+
+        if (!rootPath && !packageFolder) {
             return;
         }
 
-        createDir(path, folder);
-        window.showInformationMessage('Successfully created the file!');
+        const packageInitPath = join(rootPath, packageFolder, '__init__.py');
+
+        saveFileWithContent(packageInitPath, '');
     }
+
 
     async newPythonFile(path?: Uri): Promise<void> {
 
