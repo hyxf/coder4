@@ -21,16 +21,7 @@ export const directoryMap = async (
     return workspace.findFiles(includes, exclude, options?.maxResults);
 };
 
-export const createDir = async (path: string): Promise<void> => {
-    let folder: string = '';
-
-    if (workspace.workspaceFolders) {
-        folder = workspace.workspaceFolders[0].uri.fsPath;
-    } else {
-        window.showErrorMessage('The file has not been created!');
-        return;
-    }
-
+export const createDir = async (folder: string, path: string): Promise<void> => {
     const file = join(folder, path);
     const newDirectoryUri = Uri.file(file);
     await workspace.fs.createDirectory(newDirectoryUri);

@@ -9,26 +9,24 @@ export class FileController {
     constructor(private readonly config: Config) { }
 
     async newPythonPackage(path?: Uri): Promise<void> {
-        // Get the relative path
-        const folderPath: string = path ? await getRelativePath(path.path) : '';
 
-        // Get the path to the folder
         const folder = await getPath(
-            'Folder name',
-            'Folder name. E.g. src, app...',
-            folderPath,
-            (path: string) => {
-                if (!/^(?!\/)[^\sÀ-ÿ]+?$/.test(path)) {
-                    return 'The folder name must be a valid name';
+            'New Python Package',
+            'name',
+            "",
+            (pkg: string) => {
+                if (!/^(?!\/)[^\sÀ-ÿ]+?$/.test(pkg)) {
+                    return 'The package name must be a valid name';
                 }
                 return;
             },
         );
 
-        if (!folder || folderPath === folder) {
+        if (!path && !folder) {
             return;
         }
-        createDir(folder);
+
+        createDir(path, folder);
         window.showInformationMessage('Successfully created the file!');
     }
 
