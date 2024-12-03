@@ -76,7 +76,7 @@ export function activate(context: vscode.ExtensionContext) {
 				() => false
 			);
 
-			const targetRequirement = path.join(rootFolder, '');
+			const targetRequirement = path.join(rootFolder, 'requirements.txt');
 			const fileRequirementExists = await vscode.workspace.fs.stat(vscode.Uri.file(targetRequirement)).then(
 				() => true,
 				() => false
