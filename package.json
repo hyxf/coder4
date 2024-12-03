@@ -92,6 +92,20 @@
       }
     ],
     "menus": {
+      "commandPalette": [
+        {
+          "command": "coder4.python.package",
+          "when": "false"
+        },
+        {
+          "command": "coder4.python.file",
+          "when": "false"
+        },
+        {
+          "command": "coder4.python.pyproject.toml",
+          "when": "false"
+        }
+      ],
       "explorer/context": [
         {
           "submenu": "coder4.submenu",
