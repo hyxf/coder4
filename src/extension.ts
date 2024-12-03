@@ -35,7 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	vscode.commands.registerCommand(`${EXTENSION_ID}.python.package`, (args) => fileController.newPythonPackage(args));
 	vscode.commands.registerCommand(`${EXTENSION_ID}.python.file`, (args) => fileController.newPythonFile(args));
-	vscode.commands.registerCommand(`${EXTENSION_ID}.python.pyproject.toml`, (args) => fileController.newPyProject(args));
+	vscode.commands.registerCommand(`${EXTENSION_ID}.python.pyproject.toml`, () => fileController.newPyProject());
 
 	context.subscriptions.push(
 		disposableFileLayout,

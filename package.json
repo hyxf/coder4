@@ -94,6 +94,10 @@
     "menus": {
       "commandPalette": [
         {
+          "command": "coder4.python.pyproject.toml",
+          "when": "isPythonProject"
+        },
+        {
           "command": "coder4.python.package",
           "when": "false"
         },
@@ -102,7 +106,23 @@
           "when": "false"
         },
         {
-          "command": "coder4.python.pyproject.toml",
+          "command": "coder4.file.layout",
+          "when": "false"
+        },
+        {
+          "command": "coder4.file.component",
+          "when": "false"
+        },
+        {
+          "command": "coder4.file.loading",
+          "when": "false"
+        },
+        {
+          "command": "coder4.file.page",
+          "when": "false"
+        },
+        {
+          "command": "coder4.terminal.project",
           "when": "false"
         }
       ],
@@ -126,10 +146,6 @@
         {
           "command": "coder4.python.file",
           "group": "2_0"
-        },
-        {
-          "command": "coder4.python.pyproject.toml",
-          "group": "2_1"
         }
       ],
       "coder4.nextjs.submenu": [

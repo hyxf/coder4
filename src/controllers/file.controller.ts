@@ -1,5 +1,6 @@
+import { access } from 'fs';
 import { join } from 'path';
-import { Uri } from 'vscode';
+import { Uri, window, workspace } from 'vscode';
 import { Config } from "../configs/config";
 import { getName, getPath } from "../helper/dialog.helper";
 import { getRelativePath, saveFile, saveFileWithContent } from "../helper/filesystem.helper";
@@ -9,8 +10,27 @@ import { dasherize } from '../helper/inflector.helper';
 export class FileController {
     constructor(private readonly config: Config) { }
 
-    async newPyProject(path?: Uri): Promise<void> {
+    async newPyProject(): Promise<void> {
+        let folder: string = '';
 
+        if (workspace.workspaceFolders) {
+            folder = workspace.workspaceFolders[0].uri.fsPath;
+        } else {
+            window.showErrorMessage('The file has not been created!');
+            return;
+        }
+
+        const content = `'use client;'`;
+
+        const pyproject = join(folder, `pyproject.toml`);
+
+        access(pyproject, (err: any) => {
+            if (err) {
+                saveFileWithContent(pyproject, content);
+            } else {
+                window.showWarningMessage('File "pyproject.toml" already exists.');
+            }
+        });
     }
 
     /**
