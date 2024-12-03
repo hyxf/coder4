@@ -110,7 +110,7 @@
         {
           "submenu": "coder4.nextjs.submenu",
           "group": "2_workspace",
-          "when": "explorerViewletFocus && explorerResourceIsFolder && !explorerResourceIsRoot"
+          "when": "explorerViewletFocus && explorerResourceIsFolder && !explorerResourceIsRoot && isNodeJsProject"
         },
         {
           "submenu": "coder4.python.submenu",

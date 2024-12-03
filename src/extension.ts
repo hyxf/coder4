@@ -1,3 +1,4 @@
+import * as path from 'path';
 import * as vscode from 'vscode';
 import { Config, EXTENSION_ID } from './configs/config';
 import { FileController } from './controllers/file.controller';
@@ -42,6 +43,25 @@ export function activate(context: vscode.ExtensionContext) {
 		disposableFileLoading,
 		disposableFilePage,
 		disposableTerminalProject);
+
+	//---
+	const cmdCheckNodeJs = `${EXTENSION_ID}.ext.checkNodeJs`;
+	vscode.commands.registerCommand(cmdCheckNodeJs, async () => {
+		const workspaceFolders = vscode.workspace.workspaceFolders;
+
+		if (workspaceFolders) {
+			const rootFolder = workspaceFolders[0].uri.fsPath;
+			const targetPackageJson = path.join(rootFolder, 'package.json');
+
+			const fileExists = await vscode.workspace.fs.stat(vscode.Uri.file(targetPackageJson)).then(
+				() => true,
+				() => false
+			);
+
+			vscode.commands.executeCommand('setContext', 'isNodeJsProject', fileExists);
+		}
+	});
+	vscode.commands.executeCommand(cmdCheckNodeJs);
 }
 
 export function deactivate() { }
