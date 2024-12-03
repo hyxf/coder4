@@ -62,6 +62,29 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 	vscode.commands.executeCommand(cmdCheckNodeJs);
+	//---
+	const cmdCheckPython = `${EXTENSION_ID}.ext.checkPython`;
+	vscode.commands.registerCommand(cmdCheckPython, async () => {
+		const workspaceFolders = vscode.workspace.workspaceFolders;
+
+		if (workspaceFolders) {
+			const rootFolder = workspaceFolders[0].uri.fsPath;
+
+			const targetPyProject = path.join(rootFolder, 'pyproject.toml');
+			const filePyProjectExists = await vscode.workspace.fs.stat(vscode.Uri.file(targetPyProject)).then(
+				() => true,
+				() => false
+			);
+
+			const targetRequirement = path.join(rootFolder, '');
+			const fileRequirementExists = await vscode.workspace.fs.stat(vscode.Uri.file(targetRequirement)).then(
+				() => true,
+				() => false
+			);
+			vscode.commands.executeCommand('setContext', 'isPythonProject', filePyProjectExists || fileRequirementExists);
+		}
+	});
+	vscode.commands.executeCommand(cmdCheckPython);
 }
 
 export function deactivate() { }
