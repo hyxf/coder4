@@ -105,6 +105,10 @@
       {
         "id": "coder4.python.submenu",
         "label": "Coder4 Python Generator"
+      },
+      {
+        "id": "coder4.snippet.submenu",
+        "label": "Coder4 Snippet Generator"
       }
     ],
     "menus": {
@@ -152,6 +156,23 @@
           "submenu": "coder4.python.submenu",
           "group": "2_workspace",
           "when": "explorerViewletFocus && explorerResourceIsFolder && !explorerResourceIsRoot && isPythonProject"
+        }
+      ],
+      "editor/context": [
+        {
+          "submenu": "coder4.snippet.submenu",
+          "when": "editorHasSelection",
+          "group": "navigation"
+        }
+      ],
+      "coder4.snippet.submenu": [
+        {
+          "command": "coder4.generate.codestring",
+          "group": "3_0"
+        },
+        {
+          "command": "coder4.generate.snippet",
+          "group": "3_0"
         }
       ],
       "coder4.python.submenu": [

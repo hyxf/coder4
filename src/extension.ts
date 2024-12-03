@@ -41,7 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	//---
 	const devController = new DevController(config);
-	const disposableGenerateSnippet = vscode.commands.registerCommand(`${EXTENSION_ID}.generate.`, () => devController.generateSnippet());
+	const disposableGenerateSnippet = vscode.commands.registerCommand(`${EXTENSION_ID}.generate.snippet`, () => devController.generateSnippet());
 	const disposableGenerateCodestring = vscode.commands.registerCommand(`${EXTENSION_ID}.generate.codestring`, () => devController.generateCodeString());
 	//---
 
