@@ -9,6 +9,10 @@ import { dasherize } from '../helper/inflector.helper';
 export class FileController {
     constructor(private readonly config: Config) { }
 
+    async newPyProject(path?: Uri): Promise<void> {
+
+    }
+
     /**
      * new python package
      * @param path path
