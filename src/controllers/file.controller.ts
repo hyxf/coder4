@@ -6,10 +6,16 @@ import { getName, getPath } from "../helper/dialog.helper";
 import { getRelativePath, saveFile, saveFileWithContent } from "../helper/filesystem.helper";
 import { dasherize } from '../helper/inflector.helper';
 
-
+/**
+ * file controller
+ */
 export class FileController {
     constructor(private readonly config: Config) { }
 
+    /**
+     * new pyproject
+     * @returns 
+     */
     async newPyProject(): Promise<void> {
         let folder: string = '';
 
@@ -89,7 +95,11 @@ export class FileController {
         await saveFileWithContent(pythonPath, '');
     }
 
-
+    /**
+     * new page
+     * @param path 
+     * @returns 
+     */
     async newPage(path?: Uri): Promise<void> {
         // Get the relative path
         const folderPath: string = path ? await getRelativePath(path.path) : '';
@@ -136,6 +146,11 @@ export class FileController {
         saveFile(folder, filename, content);
     }
 
+    /**
+     * new loading
+     * @param path 
+     * @returns 
+     */
     async newLoading(path?: Uri): Promise<void> {
         // Get the relative path
         const folderPath: string = path ? await getRelativePath(path.path) : '';
@@ -167,7 +182,11 @@ export class FileController {
         saveFile(folder, filename, content);
     }
 
-
+    /**
+     * new component
+     * @param path path
+     * @returns 
+     */
     async newComponent(path?: Uri): Promise<void> {
         // Get the relative path
         const folderPath: string = path ? await getRelativePath(path.path) : '';
@@ -224,7 +243,11 @@ export class FileController {
         saveFile(folder, filename, content);
     }
 
-
+    /**
+     * new layout
+     * @param path 
+     * @returns 
+     */
     async newLayout(path?: Uri): Promise<void> {
         // Get the relative path
         const folderPath: string = path ? await getRelativePath(path.path) : '';
