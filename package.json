@@ -35,11 +35,22 @@
             ],
             "scope": "resource",
             "description": "Sets the default extension for the generated files"
+          },
+          "coder4.tabSize": {
+            "type": "integer",
+            "default": 4,
+            "scope": "resource",
+            "description": "Sets the tabSize"
           }
         }
       }
     ],
     "commands": [
+      {
+        "command": "coder4.generate.snippet",
+        "title": "Generate Snippet",
+        "category": "coder4"
+      },
       {
         "command": "coder4.python.pyproject.toml",
         "title": "Create pyproject.toml",

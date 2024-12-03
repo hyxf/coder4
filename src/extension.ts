@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
 import { Config, EXTENSION_ID } from './configs/config';
+import { DevController } from './controllers/dev.controller';
 import { FileController } from './controllers/file.controller';
 import { TerminalController } from './controllers/terminal.controller';
 
@@ -36,6 +37,10 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand(`${EXTENSION_ID}.python.package`, (args) => fileController.newPythonPackage(args));
 	vscode.commands.registerCommand(`${EXTENSION_ID}.python.file`, (args) => fileController.newPythonFile(args));
 	vscode.commands.registerCommand(`${EXTENSION_ID}.python.pyproject.toml`, () => fileController.newPyProject());
+
+	//---
+	const devController = new DevController(config);
+	vscode.commands.registerCommand(`${EXTENSION_ID}.generate.snippet`, () => devController.generateSnippet());
 
 	context.subscriptions.push(
 		disposableFileLayout,
