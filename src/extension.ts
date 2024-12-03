@@ -24,24 +24,25 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 
 	const fileController = new FileController(config);
-	const terminalController = new TerminalController(config);
 
 	const disposableFileLayout = vscode.commands.registerCommand(`${EXTENSION_ID}.file.layout`, (args) => fileController.newLayout(args));
 	const disposableFileComponent = vscode.commands.registerCommand(`${EXTENSION_ID}.file.component`, (args) => fileController.newComponent(args));
 	const disposableFileLoading = vscode.commands.registerCommand(`${EXTENSION_ID}.file.loading`, (args) => fileController.newLoading(args));
 	const disposableFilePage = vscode.commands.registerCommand(`${EXTENSION_ID}.file.page`, (args) => fileController.newPage(args));
+
+	const terminalController = new TerminalController(config);
 	const disposableTerminalProject = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.project`, () => terminalController.newProject());
 
 	//---
 
-	vscode.commands.registerCommand(`${EXTENSION_ID}.python.package`, (args) => fileController.newPythonPackage(args));
-	vscode.commands.registerCommand(`${EXTENSION_ID}.python.file`, (args) => fileController.newPythonFile(args));
-	vscode.commands.registerCommand(`${EXTENSION_ID}.python.pyproject.toml`, () => fileController.newPyProject());
+	const disposablePythonPackage = vscode.commands.registerCommand(`${EXTENSION_ID}.python.package`, (args) => fileController.newPythonPackage(args));
+	const disposablePythonFile = vscode.commands.registerCommand(`${EXTENSION_ID}.python.file`, (args) => fileController.newPythonFile(args));
+	const disposablePyProject = vscode.commands.registerCommand(`${EXTENSION_ID}.python.pyproject.toml`, () => fileController.newPyProject());
 
 	//---
 	const devController = new DevController(config);
-	vscode.commands.registerCommand(`${EXTENSION_ID}.generate.snippet`, () => devController.generateSnippet());
-	vscode.commands.registerCommand(`${EXTENSION_ID}.generate.codestring`, () => devController.generateCodeString());
+	const disposableGenerateSnippet = vscode.commands.registerCommand(`${EXTENSION_ID}.generate.`, () => devController.generateSnippet());
+	const disposableGenerateCodestring = vscode.commands.registerCommand(`${EXTENSION_ID}.generate.codestring`, () => devController.generateCodeString());
 	//---
 
 	context.subscriptions.push(
@@ -49,7 +50,12 @@ export function activate(context: vscode.ExtensionContext) {
 		disposableFileComponent,
 		disposableFileLoading,
 		disposableFilePage,
-		disposableTerminalProject);
+		disposableTerminalProject,
+		disposablePythonPackage,
+		disposablePythonFile,
+		disposablePyProject,
+		disposableGenerateSnippet,
+		disposableGenerateCodestring);
 
 	//---
 	const cmdCheckNodeJs = `${EXTENSION_ID}.ext.checkNodeJs`;
