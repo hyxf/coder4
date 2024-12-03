@@ -9,6 +9,11 @@ import { dasherize } from '../helper/inflector.helper';
 export class FileController {
     constructor(private readonly config: Config) { }
 
+    /**
+     * new python package
+     * @param path path
+     * @returns 
+     */
     async newPythonPackage(path?: Uri): Promise<void> {
         const folder = await getPath(
             'New Python Package',
@@ -32,14 +37,34 @@ export class FileController {
         saveFileWithContent(packageInitPath, '');
     }
 
-
+    /**
+     * new python file
+     * @param path path
+     * @returns 
+     */
     async newPythonFile(path?: Uri): Promise<void> {
+        const pythonName = await getPath(
+            'New Python File',
+            'name',
+            "",
+            (name: string) =>
+                !/^(?!\/)[^\sÀ-ÿ]+?$/.test(name)
+                    ? 'The Python file name must be a valid name'
+                    : undefined
+        );
 
+        const rootPath = path?.fsPath || "";
+        if (!pythonName || !rootPath) {
+            return;
+        }
+
+        const pythonFile = pythonName.endsWith('.py') ? pythonName : `${pythonName}.py`;
+
+        const pythonPath = join(rootPath, pythonFile);
+
+        await saveFileWithContent(pythonPath, '');
     }
 
-    async newPyProject(path?: Uri): Promise<void> {
-
-    }
 
     async newPage(path?: Uri): Promise<void> {
         // Get the relative path
