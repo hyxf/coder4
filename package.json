@@ -47,6 +47,11 @@
     ],
     "commands": [
       {
+        "command": "coder4.generate.codestring",
+        "title": "Generate CodeString",
+        "category": "coder4"
+      },
+      {
         "command": "coder4.generate.snippet",
         "title": "Generate Snippet",
         "category": "coder4"
