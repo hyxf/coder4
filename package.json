@@ -42,7 +42,7 @@
     "commands": [
       {
         "command": "coder4.python.pyproject.toml",
-        "title": "pyproject.toml",
+        "title": "Create pyproject.toml",
         "category": "coder4"
       },
       {
@@ -170,11 +170,11 @@
     "snippets": [
       {
         "language": "python",
-        "path": "./snippets/base.json"
+        "path": "./snippets/python/base.json"
       },
       {
         "language": "python",
-        "path": "./snippets/comprehension.json"
+        "path": "./snippets/python/comprehension.json"
       }
     ]
   },
