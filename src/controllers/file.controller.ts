@@ -1,7 +1,7 @@
-import { Uri } from 'vscode';
+import { Uri, window } from 'vscode';
 import { Config } from "../configs/config";
 import { getName, getPath } from "../helper/dialog.helper";
-import { getRelativePath, saveFile } from "../helper/filesystem.helper";
+import { createDir, getRelativePath, saveFile } from "../helper/filesystem.helper";
 import { dasherize } from '../helper/inflector.helper';
 
 
@@ -9,7 +9,27 @@ export class FileController {
     constructor(private readonly config: Config) { }
 
     async newPythonPackage(path?: Uri): Promise<void> {
+        // Get the relative path
+        const folderPath: string = path ? await getRelativePath(path.path) : '';
 
+        // Get the path to the folder
+        const folder = await getPath(
+            'Folder name',
+            'Folder name. E.g. src, app...',
+            folderPath,
+            (path: string) => {
+                if (!/^(?!\/)[^\sÀ-ÿ]+?$/.test(path)) {
+                    return 'The folder name must be a valid name';
+                }
+                return;
+            },
+        );
+
+        if (!folder || folderPath === folder) {
+            return;
+        }
+        createDir(folder);
+        window.showInformationMessage('Successfully created the file!');
     }
 
     async newPythonFile(path?: Uri): Promise<void> {
