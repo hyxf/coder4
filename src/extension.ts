@@ -25,14 +25,16 @@ export function activate(context: vscode.ExtensionContext) {
 	const terminalController = new TerminalController(config);
 
 	const disposableFileLayout = vscode.commands.registerCommand(`${EXTENSION_ID}.file.layout`, (args) => fileController.newLayout(args));
-
 	const disposableFileComponent = vscode.commands.registerCommand(`${EXTENSION_ID}.file.component`, (args) => fileController.newComponent(args));
-
 	const disposableFileLoading = vscode.commands.registerCommand(`${EXTENSION_ID}.file.loading`, (args) => fileController.newLoading(args));
-
 	const disposableFilePage = vscode.commands.registerCommand(`${EXTENSION_ID}.file.page`, (args) => fileController.newPage(args));
-
 	const disposableTerminalProject = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.project`, () => terminalController.newProject());
+
+	//---
+
+	vscode.commands.registerCommand(`${EXTENSION_ID}.python.package`, (args) => fileController.newPythonPackage(args));
+	vscode.commands.registerCommand(`${EXTENSION_ID}.python.file`, (args) => fileController.newPythonFile(args));
+	vscode.commands.registerCommand(`${EXTENSION_ID}.python.pyproject.toml`, (args) => fileController.newPyProject(args));
 
 	context.subscriptions.push(
 		disposableFileLayout,

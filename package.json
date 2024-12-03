@@ -41,6 +41,21 @@
     ],
     "commands": [
       {
+        "command": "coder4.python.pyproject.toml",
+        "title": "pyproject.toml",
+        "category": "coder4"
+      },
+      {
+        "command": "coder4.python.file",
+        "title": "Python File",
+        "category": "coder4"
+      },
+      {
+        "command": "coder4.python.package",
+        "title": "Python Package",
+        "category": "coder4"
+      },
+      {
         "command": "coder4.file.layout",
         "title": "Generate Layout",
         "category": "coder4"
@@ -70,6 +85,10 @@
       {
         "id": "coder4.submenu",
         "label": "Coder4 File Generator"
+      },
+      {
+        "id": "coder4.python.submenu",
+        "label": "Coder4 Python Generator"
       }
     ],
     "menus": {
@@ -78,6 +97,25 @@
           "submenu": "coder4.submenu",
           "group": "2_workspace",
           "when": "explorerViewletFocus && explorerResourceIsFolder && !explorerResourceIsRoot"
+        },
+        {
+          "submenu": "coder4.python.submenu",
+          "group": "2_workspace",
+          "when": "explorerViewletFocus && explorerResourceIsFolder && !explorerResourceIsRoot"
+        }
+      ],
+      "coder4.python.submenu": [
+        {
+          "command": "coder4.python.package",
+          "group": "2_0"
+        },
+        {
+          "command": "coder4.python.file",
+          "group": "2_0"
+        },
+        {
+          "command": "coder4.python.pyproject.toml",
+          "group": "2_0"
         }
       ],
       "coder4.submenu": [

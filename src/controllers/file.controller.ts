@@ -8,6 +8,18 @@ import { dasherize } from '../helper/inflector.helper';
 export class FileController {
     constructor(private readonly config: Config) { }
 
+    async newPythonPackage(path?: Uri): Promise<void> {
+
+    }
+
+    async newPythonFile(path?: Uri): Promise<void> {
+
+    }
+
+    async newPyProject(path?: Uri): Promise<void> {
+
+    }
+
     async newPage(path?: Uri): Promise<void> {
         // Get the relative path
         const folderPath: string = path ? await getRelativePath(path.path) : '';
