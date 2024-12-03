@@ -83,8 +83,8 @@
     ],
     "submenus": [
       {
-        "id": "coder4.submenu",
-        "label": "Coder4 File Generator"
+        "id": "coder4.nextjs.submenu",
+        "label": "Coder4 NextJs Generator"
       },
       {
         "id": "coder4.python.submenu",
@@ -108,7 +108,7 @@
       ],
       "explorer/context": [
         {
-          "submenu": "coder4.submenu",
+          "submenu": "coder4.nextjs.submenu",
           "group": "2_workspace",
           "when": "explorerViewletFocus && explorerResourceIsFolder && !explorerResourceIsRoot"
         },
@@ -132,7 +132,7 @@
           "group": "2_1"
         }
       ],
-      "coder4.submenu": [
+      "coder4.nextjs.submenu": [
         {
           "command": "coder4.file.layout",
           "group": "1_0"
