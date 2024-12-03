@@ -115,7 +115,7 @@
         },
         {
           "command": "coder4.python.pyproject.toml",
-          "group": "2_0"
+          "group": "2_1"
         }
       ],
       "coder4.submenu": [
