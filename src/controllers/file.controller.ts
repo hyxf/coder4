@@ -1,4 +1,5 @@
 import { access } from 'fs';
+import * as os from 'os';
 import { join } from 'path';
 import { ExtensionContext, Uri, window, workspace } from 'vscode';
 import { Config } from "../configs/config";
@@ -57,7 +58,7 @@ export class FileController {
 
         const content = await buildPyProject(context, {
             name: 'demo',
-            user: 'bill',
+            user: os.userInfo().username,
             email: '333@qq.com',
             dependencies: deps,
             description: "",
