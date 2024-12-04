@@ -59,6 +59,15 @@ export class DevController {
             return;
         }
 
+        const scope = await window.showQuickPick(
+            ['none', 'python', 'typescript', 'typescriptreact'],
+            { placeHolder: 'Which scope do you want to use?' }
+        );
+
+        if (!scope) {
+            return;
+        }
+
         const prefix = await window.showInputBox({
             prompt: 'Please enter prefix (required)',
             placeHolder: 'prefix',
@@ -90,15 +99,16 @@ export class DevController {
             return index === separatedSnippetLength - 1 ? `"${line}"` : `"${line}",`;
         });
 
-        const content = `
-    "${name}": {
-      "prefix": "${prefix}",
-      "body": [
-        ${newSnippet.join('\n')}
-      ],
-      "description": "${description}"
-    }
-  `;
+        let content = `
+"${name}": {
+  "prefix": "${prefix}",
+  ${scope === 'none' ? '' : `"scope": "${scope}",`}
+  "body": [
+    ${newSnippet.join('\n')}
+  ],
+  "description": "${description}"
+}
+`;
 
         env.clipboard.writeText(content);
 
