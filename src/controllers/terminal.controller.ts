@@ -10,8 +10,8 @@ export class TerminalController {
         const type = await window.showQuickPick(
             [
                 {
-                    label: 'create-t3-app',
-                    description: 'Create a new project with Create T3 App',
+                    label: 'create-remix-app',
+                    description: 'Create a new project with Create remix App',
                 },
                 {
                     label: 'create-next-app',
@@ -20,7 +20,7 @@ export class TerminalController {
                 {
                     label: 'create-vite-app',
                     description: 'Create a new project with React and Vite',
-                },
+                }
             ],
             {
                 placeHolder: 'What kind of project do you want to create?',
@@ -32,7 +32,7 @@ export class TerminalController {
         }
 
         const manager = await pickItem(
-            ['npm', 'yarn', 'pnpm', 'bun'],
+            ['npm', 'yarn', 'pnpm'],
             'Which package manager do you want to use?',
         );
 
@@ -93,13 +93,6 @@ export class TerminalController {
                             `pnpm create vite . --template ${viteType.label}`,
                         );
                         break;
-
-                    case 'bun':
-                        runCommand(
-                            type.label,
-                            `bunx create-vite . --template ${viteType.label}`,
-                        );
-                        break;
                 }
 
                 break;
@@ -117,32 +110,25 @@ export class TerminalController {
                     case 'pnpm':
                         runCommand(type.label, 'pnpm create next-app .');
                         break;
-
-                    case 'bun':
-                        runCommand(type.label, 'bunx create-next-app .');
-                        break;
                 }
 
                 break;
 
-            case 'create-t3-app':
+            case 'create-remix-app':
                 switch (manager) {
                     case 'npm':
-                        runCommand(type.label, 'npm create t3-app@latest .');
+                        runCommand(type.label, 'npx create-remix@latest .');
                         break;
 
                     case 'yarn':
-                        runCommand(type.label, 'yarn create t3-app .');
+                        runCommand(type.label, 'yarn create remix .');
                         break;
 
                     case 'pnpm':
-                        runCommand(type.label, 'pnpm create t3-app@latest .');
-                        break;
-
-                    case 'bun':
-                        runCommand(type.label, 'bun create t3-app@latest .');
+                        runCommand(type.label, 'pnpm create remix@latest .');
                         break;
                 }
+
                 break;
         }
     }
