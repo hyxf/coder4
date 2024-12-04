@@ -5,6 +5,7 @@
   "version": "0.0.2",
   "license": "MIT",
   "publisher": "billchiu",
+  "icon": "./icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/hyxf/coder4"
