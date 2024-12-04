@@ -5,7 +5,7 @@ import { Config } from "../configs/config";
 import { getName, getPath } from "../helper/dialog.helper";
 import { getRelativePath, saveFile, saveFileWithContent } from "../helper/filesystem.helper";
 import { dasherize } from '../helper/inflector.helper';
-import { pipDeps } from '../helper/library.helper';
+import { pipDeps } from '../helper/project.helper';
 
 /**
  * file controller
