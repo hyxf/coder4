@@ -159,7 +159,8 @@
         {
           "submenu": "coder4.snippet.submenu",
           "when": "editorHasSelection",
-          "group": "navigation"
+          "group": "0_coder4_snippets"
+        
         }
       ],
       "coder4.snippet.submenu": [
