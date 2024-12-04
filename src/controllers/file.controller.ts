@@ -14,8 +14,6 @@ export class FileController {
 
     constructor(private readonly config: Config) { }
 
-
-
     async newRequirements(): Promise<void> {
         let folder: string = '';
 
@@ -26,7 +24,7 @@ export class FileController {
             return;
         }
 
-        const deps = await pipDeps();
+        const deps = await pipDeps([]);
 
         const content = deps.join("\n");
 
