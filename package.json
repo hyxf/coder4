@@ -6,6 +6,10 @@
   "author": "BillChiu",
   "license": "MIT",
   "publisher": "billchiu",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hyxf/coder4"
+  },
   "engines": {
     "vscode": "^1.95.0"
   },
@@ -160,7 +164,6 @@
           "submenu": "coder4.snippet.submenu",
           "when": "editorHasSelection",
           "group": "0_coder4_snippets"
-        
         }
       ],
       "coder4.snippet.submenu": [
