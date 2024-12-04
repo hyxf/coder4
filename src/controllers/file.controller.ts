@@ -64,7 +64,7 @@ export class FileController {
 
         const packageInitPath = join(rootPath, packageFolder, '__init__.py');
 
-        saveFileWithContent(packageInitPath, '');
+        await saveFileWithContent(packageInitPath, '');
     }
 
     /**
@@ -143,7 +143,7 @@ export class FileController {
 
         const filename = `page.tsx`;
 
-        saveFile(folder, filename, content);
+        await saveFile(folder, filename, content);
     }
 
     /**
@@ -179,7 +179,7 @@ export class FileController {
 
         const filename = `loading.tsx`;
 
-        saveFile(folder, filename, content);
+        await saveFile(folder, filename, content);
     }
 
     /**
@@ -240,7 +240,7 @@ export class FileController {
 
         const filename = `${dasherize(functionName)}.tsx`;
 
-        saveFile(folder, filename, content);
+        await saveFile(folder, filename, content);
     }
 
     /**
@@ -295,6 +295,6 @@ export class FileController {
 
         const filename = `layout.tsx`;
 
-        saveFile(folder, filename, content);
+        await saveFile(folder, filename, content);
     }
 }
