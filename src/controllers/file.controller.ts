@@ -1,6 +1,6 @@
 import { access } from 'fs';
 import { join } from 'path';
-import { Uri, window, workspace } from 'vscode';
+import { ExtensionContext, Uri, window, workspace } from 'vscode';
 import { Config } from "../configs/config";
 import { getName, getPath } from "../helper/dialog.helper";
 import { getRelativePath, saveFile, saveFileWithContent } from "../helper/filesystem.helper";
@@ -43,7 +43,7 @@ export class FileController {
      * new pyproject
      * @returns 
      */
-    async newPyProject(): Promise<void> {
+    async newPyProject(context: ExtensionContext): Promise<void> {
         let folder: string = '';
 
         if (workspace.workspaceFolders) {
@@ -53,7 +53,9 @@ export class FileController {
             return;
         }
 
-        const content = await buildPyProject();
+        const content = await buildPyProject(context, {
+            name: 'demo', user: 'bill', email: '333@qq.com'
+        });
 
         const pyproject = join(folder, `pyproject.toml`);
 

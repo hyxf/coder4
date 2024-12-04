@@ -1,4 +1,8 @@
-import { QuickPickItem, window } from "vscode";
+import * as fs from 'fs';
+import * as handlebars from "handlebars";
+import { join } from 'path';
+import { ExtensionContext, QuickPickItem, window } from "vscode";
+
 
 
 const pipItems: QuickPickItem[] = [
@@ -11,10 +15,33 @@ const pipItems: QuickPickItem[] = [
     { label: 'Flask', description: 'The Python micro framework for building web applications.' },
 ];
 
-export async function buildPyProject(): Promise<string> {
 
-    return "";
+interface PyProjectData {
+    name: string;
+    user: string;
+    email: string;
 }
+
+export async function buildPyProject(context: ExtensionContext, data: PyProjectData): Promise<string> {
+    const resourcePath = join(context.extensionPath, 'template', 'pyproject.hbs');
+    let result = "";
+    try {
+        if (!fs.existsSync(resourcePath)) {
+            throw new Error(`Template file not found: ${resourcePath}`);
+        }
+
+        const fileContent = await fs.promises.readFile(resourcePath, 'utf-8');
+
+        const template = handlebars.compile(fileContent);
+
+        result = template(data);
+    } catch (error) {
+        console.error('Error generating pyproject:', error);
+    }
+
+    return result || '';
+}
+
 
 /**
  * pip deps
