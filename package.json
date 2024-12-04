@@ -114,10 +114,6 @@
     "menus": {
       "commandPalette": [
         {
-          "command": "coder4.python.pyproject.toml",
-          "when": "isPythonProject"
-        },
-        {
           "command": "coder4.python.package",
           "when": "false"
         },
