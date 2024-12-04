@@ -59,15 +59,6 @@ export class DevController {
             return;
         }
 
-        const scope = await window.showInputBox({
-            prompt: 'Please enter scope (optional)',
-            placeHolder: 'scope',
-        });
-
-        if (!scope) {
-            return;
-        }
-
         const prefix = await window.showInputBox({
             prompt: 'Please enter prefix (required)',
             placeHolder: 'prefix',
@@ -79,35 +70,37 @@ export class DevController {
         }
 
         const description = await window.showInputBox({
-            prompt: 'Please enter description (optional)',
+            prompt: 'Please enter description (required)',
             placeHolder: 'description',
+            validateInput: input => (input ? '' : 'Description is required'),
         });
 
         if (!description) {
             return;
         }
 
-        const tabSize = this.config.tabSize;
+        const separatedSnippet = selection
+            .replace(/\\/g, "\\\\")
+            .replace(/"/g, '\\"')
+            .split("\n");
+        const separatedSnippetLength = separatedSnippet.length;
 
-        const spaces = new RegExp(` {${tabSize}}`, 'g');
+        // add double quotes around each line apart from the last one
+        const newSnippet = separatedSnippet.map((line, index) => {
+            return index === separatedSnippetLength - 1 ? `"${line}"` : `"${line}",`;
+        });
 
-        const snippetObj = {
-            [name]: {
-                ...(scope && { scope }),
-                prefix,
-                body: selection
-                    .split(/\r?\n/)
-                    .map(line => line.replace(/\$(?![\d{]|TM_)/g, '\\$').replace(spaces, '\t')),
-                ...(description && { description }),
-            },
-        };
+        const content = `
+    "${name}": {
+      "prefix": "${prefix}",
+      "body": [
+        ${newSnippet.join('\n')}
+      ],
+      "description": "${description}"
+    }
+  `;
 
-        const snippetJSON = JSON.stringify(snippetObj, null, tabSize)
-            .split('\n')
-            .slice(1, -1)
-            .join('\n');
-
-        env.clipboard.writeText(`${snippetJSON},`);
+        env.clipboard.writeText(content);
 
         window.showInformationMessage(
             'Snippet has been copied into the clipboard, please use the command "Snippets: Configure User Snippets" to paste it.',
