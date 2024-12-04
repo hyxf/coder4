@@ -140,10 +140,6 @@
         {
           "command": "coder4.file.page",
           "when": "false"
-        },
-        {
-          "command": "coder4.terminal.project",
-          "when": "false"
         }
       ],
       "explorer/context": [
