@@ -6,7 +6,7 @@ import { ExtensionContext, QuickPickItem, window } from "vscode";
 
 
 const pipItems: QuickPickItem[] = [
-    { label: 'click', description: 'Python composable command line interface toolkit' },
+    { label: 'click', description: 'Python composable command line interface toolkit', picked: true },
     { label: 'requests', description: 'A simple, yet elegant, HTTP library.' },
     { label: 'tqdm', description: 'A Fast, Extensible Progress Bar for Python and CLI' },
     { label: 'pydantic', description: 'Data validation using Python type hints' },

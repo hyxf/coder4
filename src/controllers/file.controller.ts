@@ -46,23 +46,71 @@ export class FileController {
      */
     async newPyProject(context: ExtensionContext): Promise<void> {
         let folder: string = '';
+        let workspaceName: string = '';
 
         if (workspace.workspaceFolders) {
             folder = workspace.workspaceFolders[0].uri.fsPath;
+            workspaceName = workspace.workspaceFolders[0].name;
         } else {
             window.showErrorMessage('The file has not been created!');
             return;
         }
 
+        const name = await window.showInputBox({
+            prompt: "Project Name",
+            placeHolder: "name",
+            value: workspaceName,
+            validateInput: (pkg: string) =>
+                !/^(?!\/)[^\sÀ-ÿ]+?$/.test(pkg)
+                    ? 'The project name must be a valid name'
+                    : undefined,
+        });
+
+        if (!name) {
+            return;
+        }
+
+        const packageName = await window.showInputBox({
+            prompt: "Package Name",
+            placeHolder: "name",
+            value: name.toLowerCase(),
+            validateInput: (pkg: string) =>
+                !/^(?!\/)[^\sÀ-ÿ]+?$/.test(pkg)
+                    ? 'The package name must be a valid name'
+                    : undefined,
+        });
+
+        if (!packageName) {
+            return;
+        }
+
+        const description = await window.showInputBox({
+            prompt: "Description",
+            placeHolder: "description",
+            value: `${name} description`,
+            validateInput: (pkg: string) => {
+                if (!pkg) {
+                    return 'The description cannot be empty';
+                }
+                return undefined;
+            },
+        });
+
+        if (!description) {
+            return;
+        }
+
         const deps = await pipDeps([]);
 
+        const user = os.userInfo().username;
+
         const content = await buildPyProject(context, {
-            name: 'demo',
-            user: os.userInfo().username,
-            email: '333@qq.com',
+            name: name || "demo",
+            user: user,
+            email: `${user}@gmail.com`,
             dependencies: deps,
-            description: "",
-            packageName: ""
+            description: description,
+            packageName: packageName
         });
 
         const pyproject = join(folder, `pyproject.toml`);
