@@ -46,7 +46,7 @@ export class TerminalController {
             window.showInformationMessage('Node.js project created successfully!');
         } catch (error) {
             window.showErrorMessage(
-                `Failed to create Node.js project: ${error}`
+                `Failed to create Node.js project: ${error instanceof Error ? error.message : error}`
             );
         }
     }
@@ -56,129 +56,107 @@ export class TerminalController {
      * @returns 
      */
     async newReactProject(): Promise<void> {
-        const type = await window.showQuickPick(
+        const projectType = await window.showQuickPick(
             [
-                {
-                    label: 'create-remix-app',
-                    description: 'Create a new project with Create remix App',
-                },
-                {
-                    label: 'create-next-app',
-                    description: 'Create a new project with Create Next App',
-                },
-                {
-                    label: 'create-vite-app',
-                    description: 'Create a new project with React and Vite',
-                }
+                { label: 'create-remix-app', description: 'Create a new project with Create Remix App' },
+                { label: 'create-next-app', description: 'Create a new project with Create Next App' },
+                { label: 'create-vite-app', description: 'Create a new project with React and Vite' },
             ],
-            {
-                placeHolder: 'What kind of project do you want to create?',
-            },
+            { placeHolder: 'What kind of project do you want to create?' }
         );
 
-        if (!type) {
+        if (!projectType) {
             return;
         }
 
-        const manager = await pickItem(
+        const packageManager = await window.showQuickPick(
             ['npm', 'yarn', 'pnpm'],
-            'Which package manager do you want to use?',
+            { placeHolder: 'Which package manager do you want to use?' }
         );
 
-        if (!manager) {
+        if (!packageManager) {
             return;
         }
 
-        switch (type.label) {
+        let viteTemplate: string | undefined;
+        if (projectType.label === 'create-vite-app') {
+            const viteChoice = await window.showQuickPick(
+                [
+                    { label: 'react', description: 'React and Vite' },
+                    { label: 'react-ts', description: 'React, TypeScript and Vite' },
+                    { label: 'react-swc', description: 'React, SWC and Vite' },
+                    { label: 'react-swc-ts', description: 'React, TypeScript, SWC and Vite' },
+                ],
+                { placeHolder: 'What kind of Vite template do you want to use?' }
+            );
+
+            if (!viteChoice) {
+                return;
+            }
+
+            viteTemplate = viteChoice.label;
+        }
+
+        let command = '';
+        switch (projectType.label) {
             case 'create-vite-app':
-                const viteType = await window.showQuickPick(
-                    [
-                        {
-                            label: 'react',
-                            description: 'Create a new project with React and Vite',
-                        },
-                        {
-                            label: 'react-ts',
-                            description:
-                                'Create a new project with React, TypeScript and Vite',
-                        },
-                        {
-                            label: 'react-swc',
-                            description: 'Create a new project with React, SWC and Vite',
-                        },
-                        {
-                            label: 'react-swc-ts',
-                            description:
-                                'Create a new project with React, TypeScript, SWC and Vite',
-                        },
-                    ],
-                    {
-                        placeHolder: 'What kind of project do you want to create?',
-                    },
-                );
-
-                if (!viteType) {
-                    return;
+                if (viteTemplate) {
+                    switch (packageManager) {
+                        case 'npm':
+                            command = `npm create vite@latest . -- --template ${viteTemplate}`;
+                            break;
+                        case 'yarn':
+                            command = `yarn create vite . --template ${viteTemplate}`;
+                            break;
+                        case 'pnpm':
+                            command = `pnpm create vite . --template ${viteTemplate}`;
+                            break;
+                    }
                 }
-
-                switch (manager) {
-                    case 'npm':
-                        runCommand(
-                            type.label,
-                            `npm create vite@latest . -- --template ${viteType.label}`,
-                        );
-                        break;
-
-                    case 'yarn':
-                        runCommand(
-                            type.label,
-                            `yarn create vite . --template ${viteType.label}`,
-                        );
-                        break;
-
-                    case 'pnpm':
-                        runCommand(
-                            type.label,
-                            `pnpm create vite . --template ${viteType.label}`,
-                        );
-                        break;
-                }
-
                 break;
 
             case 'create-next-app':
-                switch (manager) {
+                switch (packageManager) {
                     case 'npm':
-                        runCommand(type.label, 'npx create-next-app@latest .');
+                        command = `npx create-next-app@latest .`;
                         break;
-
                     case 'yarn':
-                        runCommand(type.label, 'yarn create next-app .');
+                        command = `yarn create next-app .`;
                         break;
-
                     case 'pnpm':
-                        runCommand(type.label, 'pnpm create next-app .');
+                        command = `pnpm create next-app .`;
                         break;
                 }
-
                 break;
 
             case 'create-remix-app':
-                switch (manager) {
+                switch (packageManager) {
                     case 'npm':
-                        runCommand(type.label, 'npx create-remix@latest .');
+                        command = `npx create-remix@latest .`;
                         break;
-
                     case 'yarn':
-                        runCommand(type.label, 'yarn create remix .');
+                        command = `yarn create remix .`;
                         break;
-
                     case 'pnpm':
-                        runCommand(type.label, 'pnpm create remix@latest .');
+                        command = `pnpm create remix@latest .`;
                         break;
                 }
-
                 break;
         }
+
+        if (!command) {
+            window.showErrorMessage("Failed to construct the command.");
+            return;
+        }
+
+        try {
+            await runCommand(projectType.label, command);
+            window.showInformationMessage(`${projectType.label} successfully!`);
+        } catch (error) {
+            window.showErrorMessage(
+                `Failed to ${projectType.label} project: ${error instanceof Error ? error.message : error}`
+            );
+        }
     }
+
 }
