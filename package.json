@@ -130,6 +130,14 @@
     "menus": {
       "commandPalette": [
         {
+          "command": "coder4.generate.codestring",
+          "when": "false"
+        },
+        {
+          "command": "coder4.generate.snippet",
+          "when": "false"
+        },
+        {
           "command": "coder4.python.package",
           "when": "false"
         },
