@@ -73,6 +73,11 @@
         "category": "coder4"
       },
       {
+        "command": "coder4.python.requirements.txt",
+        "title": "Create requirements.txt",
+        "category": "coder4"
+      },
+      {
         "command": "coder4.python.file",
         "title": "Python File",
         "category": "coder4"

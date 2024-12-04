@@ -12,6 +12,29 @@ import { dasherize } from '../helper/inflector.helper';
 export class FileController {
     constructor(private readonly config: Config) { }
 
+    async newRequirements(): Promise<void> {
+        let folder: string = '';
+
+        if (workspace.workspaceFolders) {
+            folder = workspace.workspaceFolders[0].uri.fsPath;
+        } else {
+            window.showErrorMessage('The file has not been created!');
+            return;
+        }
+
+        const content = `click`;
+
+        const requirements = join(folder, `requirements.txt`);
+
+        access(requirements, (err: any) => {
+            if (err) {
+                saveFileWithContent(requirements, content);
+            } else {
+                window.showWarningMessage('File "requirements.txt" already exists.');
+            }
+        });
+    }
+
     /**
      * new pyproject
      * @returns 
