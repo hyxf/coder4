@@ -5,7 +5,7 @@ import { Config } from "../configs/config";
 import { getName, getPath } from "../helper/dialog.helper";
 import { getRelativePath, saveFile, saveFileWithContent } from "../helper/filesystem.helper";
 import { dasherize } from '../helper/inflector.helper';
-import { pipDeps } from '../helper/project.helper';
+import { buildPyProject, pipDeps } from '../helper/project.helper';
 
 /**
  * file controller
@@ -53,7 +53,7 @@ export class FileController {
             return;
         }
 
-        const content = `'use client;'`;
+        const content = await buildPyProject();
 
         const pyproject = join(folder, `pyproject.toml`);
 
