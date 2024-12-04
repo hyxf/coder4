@@ -198,7 +198,7 @@ export class FileController {
      * @param path 
      * @returns 
      */
-    async newPage(path?: Uri, context: ExtensionContext): Promise<void> {
+    async newPage(context: ExtensionContext, path?: Uri): Promise<void> {
         // Get the relative path
         const folderPath: string = path ? await getRelativePath(path.path) : '';
 
@@ -231,7 +231,7 @@ export class FileController {
      * @param path 
      * @returns 
      */
-    async newLoading(path?: Uri, context: ExtensionContext): Promise<void> {
+    async newLoading(context: ExtensionContext, path?: Uri): Promise<void> {
         // Get the relative path
         const folderPath: string = path ? await getRelativePath(path.path) : '';
 
@@ -264,7 +264,7 @@ export class FileController {
      * @param path path
      * @returns 
      */
-    async newComponent(path?: Uri, context: ExtensionContext): Promise<void> {
+    async newComponent(context: ExtensionContext, path?: Uri): Promise<void> {
         // Get the relative path
         const folderPath: string = path ? await getRelativePath(path.path) : '';
 
@@ -315,7 +315,7 @@ export class FileController {
      * @param path 
      * @returns 
      */
-    async newLayout(path?: Uri, context: ExtensionContext): Promise<void> {
+    async newLayout(context: ExtensionContext, path?: Uri): Promise<void> {
         // Get the relative path
         const folderPath: string = path ? await getRelativePath(path.path) : '';
 
