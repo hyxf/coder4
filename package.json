@@ -210,6 +210,10 @@
       {
         "language": "python",
         "path": "./snippets/python/comprehension.json"
+      },
+      {
+        "language": "python",
+        "path": "./snippets/python/flask.json"
       }
     ]
   },
