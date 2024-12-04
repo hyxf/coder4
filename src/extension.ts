@@ -31,8 +31,8 @@ export function activate(context: vscode.ExtensionContext) {
 	const disposableFilePage = vscode.commands.registerCommand(`${EXTENSION_ID}.file.page`, (args) => fileController.newPage(args));
 
 	const terminalController = new TerminalController(config);
-	const disposableTerminalProject = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.project`, () => terminalController.newProject());
-	const disposableTerminalNodejs = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.nodejs`, () => terminalController.newNodejs());
+	const disposableTerminalProject = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.project`, () => terminalController.newReactProject());
+	const disposableTerminalNodejs = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.nodejs`, () => terminalController.newNodejsProject());
 
 	//---
 

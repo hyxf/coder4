@@ -6,11 +6,56 @@ import { pickItem } from "../helper/dialog.helper";
 export class TerminalController {
     constructor(private readonly config: Config) { }
 
-    async newNodejs(): Promise<void> {
+    /**
+     * new nodejs project
+     * @returns 
+     */
+    async newNodejsProject(): Promise<void> {
+        const manager = await pickItem(
+            ['npm', 'yarn'],
+            'Which package manager do you want to use?'
+        );
+        if (!manager) { return; }
 
+        const useTypescript = await pickItem(
+            ['true', 'false'],
+            'Would you like to use TypeScript?'
+        );
+        if (!useTypescript) { return; }
+
+        const label = "Create Node.js Project";
+        const typescriptPackages = "typescript tsx @types/node";
+
+        const commands = [];
+        commands.push(manager === 'npm' ? 'npm init -y' : 'yarn init -y');
+
+        if (useTypescript === 'true') {
+            commands.push(
+                manager === 'npm'
+                    ? `npm install ${typescriptPackages} --save-dev`
+                    : `yarn add ${typescriptPackages} --dev`
+            );
+            commands.push(
+                manager === 'npm' ? 'npx tsc --init' : 'yarn tsc --init'
+            );
+        }
+
+        const fullCommand = commands.join(' && ');
+        try {
+            await runCommand(label, fullCommand);
+            window.showInformationMessage('Node.js project created successfully!');
+        } catch (error) {
+            window.showErrorMessage(
+                `Failed to create Node.js project: ${error}`
+            );
+        }
     }
 
-    async newProject(): Promise<void> {
+    /**
+     * new react project
+     * @returns 
+     */
+    async newReactProject(): Promise<void> {
         const type = await window.showQuickPick(
             [
                 {
