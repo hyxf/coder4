@@ -3,7 +3,7 @@
   "displayName": "Coder4",
   "description": "Coder4",
   "version": "0.0.1",
-  "author": "BillChiu",
+  "author": "billchiu",
   "license": "MIT",
   "publisher": "billchiu",
   "repository": {
@@ -17,6 +17,12 @@
     "Programming Languages",
     "Snippets",
     "Other"
+  ],
+  "keywords": [
+    "typescript",
+    "python",
+    "react",
+    "snippet"
   ],
   "activationEvents": [
     "onStartupFinished"
@@ -216,9 +222,7 @@
       }
     ]
   },
-  "extensionPack": [
-    "ms-python.python"
-  ],
+  "extensionPack": [],
   "scripts": {
     "vscode:prepublish": "yarn run compile",
     "compile": "tsc -p ./",
