@@ -6,11 +6,36 @@ import { getName, getPath } from "../helper/dialog.helper";
 import { getRelativePath, saveFile, saveFileWithContent } from "../helper/filesystem.helper";
 import { dasherize } from '../helper/inflector.helper';
 
+const pipItems = [
+    { label: 'click', description: 'Python composable command line interface toolkit' },
+    { label: 'requests', description: 'A simple, yet elegant, HTTP library.' },
+    { label: 'tqdm', description: 'A Fast, Extensible Progress Bar for Python and CLI' },
+    { label: 'pydantic', description: 'Data validation using Python type hints' },
+    { label: 'Pillow', description: 'Python Imaging Library' },
+    { label: 'fastapi', description: 'FastAPI framework, high performance, easy to learn, fast to code, ready for production' },
+    { label: 'Flask', description: 'The Python micro framework for building web applications.' },
+];
+
 /**
  * file controller
  */
 export class FileController {
+
     constructor(private readonly config: Config) { }
+
+    private async pipDeps(): Promise<string[]> {
+        const selectedItems = await window.showQuickPick(pipItems, {
+            canPickMany: true,
+            placeHolder: 'Select one or more Library',
+        });
+
+        let selectedLabels: string[] = [];
+        if (selectedItems) {
+            selectedLabels = selectedItems.map(item => item.label);
+        }
+
+        return selectedLabels;
+    }
 
     async newRequirements(): Promise<void> {
         let folder: string = '';
@@ -22,7 +47,9 @@ export class FileController {
             return;
         }
 
-        const content = `click`;
+        const deps = await this.pipDeps();
+
+        const content = deps.join("\n");
 
         const requirements = join(folder, `requirements.txt`);
 
