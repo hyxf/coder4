@@ -6,7 +6,20 @@ import { Config } from "../configs/config";
 import { getName, getPath } from "../helper/dialog.helper";
 import { getRelativePath, saveFile, saveFileWithContent } from "../helper/filesystem.helper";
 import { dasherize } from '../helper/inflector.helper';
-import { buildPyProject, pipDeps } from '../helper/project.helper';
+import { pipDeps, templateCompile } from '../helper/project.helper';
+
+interface PyProjectData {
+    name: string;
+    description: string;
+    user: string;
+    email: string;
+    packageName: string;
+    dependencies: string[]
+}
+
+interface ComponentData {
+    functionName: string;
+}
 
 /**
  * file controller
@@ -100,17 +113,17 @@ export class FileController {
             return;
         }
 
-        const deps = await pipDeps([]);
+        const dependencies = await pipDeps([]);
 
         const user = os.userInfo().username;
 
-        const content = await buildPyProject(context, {
+        const content = await templateCompile<PyProjectData>(context, "pyproject.hbs", {
             name: name || "demo",
-            user: user,
+            user,
             email: `${user}@gmail.com`,
-            dependencies: deps,
-            description: description,
-            packageName: packageName
+            dependencies,
+            description,
+            packageName
         });
 
         const pyproject = join(folder, `pyproject.toml`);
@@ -206,25 +219,7 @@ export class FileController {
             return;
         }
 
-        const content = `'use client'
-    
-    interface Props {
-    \tparams: {
-    \t\tid: string;
-    \t};
-    }
-    
-    export default function Page({ params }: Props) {
-    \tconst { id } = params;
-    
-    \treturn (
-    \t\t<>
-    \t\t\t<h1>Page { id }</h1>
-    \t\t\t<p>Page content</p>
-    \t\t</>
-    \t);
-    }
-    `;
+        const content = await templateCompile(context, "page.tsx.hbs", {});
 
         const filename = `page.tsx`;
 
@@ -257,10 +252,7 @@ export class FileController {
             return;
         }
 
-        const content = `export default function Loading() {
-    \treturn <p>Loading...</p>
-    }
-    `;
+        const content = await templateCompile(context, "loading.tsx.hbs", {});
 
         const filename = `loading.tsx`;
 
@@ -309,19 +301,9 @@ export class FileController {
             return;
         }
 
-        const content = `interface ${functionName}Props {
-    \tchildren: React.ReactNode;
-    }
-    
-    export function ${functionName}({ children }: ${functionName}Props) {
-    \treturn (
-    \t\t<>
-    \t\t\t<h1>${functionName}</h1>
-    \t\t\t{children}
-    \t\t</>
-    \t);
-    }
-    `;
+        const content = await templateCompile<ComponentData>(context, "component.tsx.hbs", {
+            functionName
+        });
 
         const filename = `${dasherize(functionName)}.tsx`;
 
@@ -354,29 +336,7 @@ export class FileController {
             return;
         }
 
-        const content = `import type { Metadata } from 'next'
-    import { Inter } from 'next/font/google'
-    import './globals.css'
-    
-    const inter = Inter({ subsets: ['latin'] })
-    
-    export const metadata: Metadata = {
-    \ttitle: 'Create Next App',
-    \tdescription: 'Create Next App with TypeScript, Tailwind CSS, NextAuth, Prisma, tRPC, and more.',
-    }
-    
-    export default function Layout({
-    \tchildren,
-    }: {
-    \tchildren: React.ReactNode
-    }) {
-    \treturn (
-    \t\t<html lang="en">
-    \t\t\t<body className={inter.className}>{children}</body>
-    \t\t</html>
-    \t)
-    }
-    `;
+        const content = await templateCompile(context, "layout.tsx.hbs", {});
 
         const filename = `layout.tsx`;
 

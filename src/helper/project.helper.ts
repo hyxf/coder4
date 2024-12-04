@@ -15,34 +15,29 @@ const pipItems: QuickPickItem[] = [
     { label: 'Flask', description: 'The Python micro framework for building web applications.' },
 ];
 
-
-interface PyProjectData {
-    name: string;
-    description: string;
-    user: string;
-    email: string;
-    packageName: string;
-    dependencies: string[]
-}
-
-export async function buildPyProject(context: ExtensionContext, data: PyProjectData): Promise<string> {
-    const resourcePath = join(context.extensionPath, 'template', 'pyproject.hbs');
-    let result = "";
+/**
+ * template compile
+ * @param context 
+ * @param name 
+ * @param data 
+ * @returns 
+ */
+export async function templateCompile<T = any>(context: ExtensionContext, name: string, data: T): Promise<string> {
+    const resourcePath = join(context.extensionPath, 'template', name);
     try {
-        if (!fs.existsSync(resourcePath)) {
-            throw new Error(`Template file not found: ${resourcePath}`);
-        }
-
         const fileContent = await fs.promises.readFile(resourcePath, 'utf-8');
-
         const template = handlebars.compile(fileContent);
-
-        result = template(data);
+        return template(data);
     } catch (error) {
-        console.error('Error generating pyproject:', error);
+        if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
+            console.error(`Template file not found: ${resourcePath}`);
+        } else if ((error as NodeJS.ErrnoException).code === 'EACCES') {
+            console.error(`Permission denied for file: ${resourcePath}`);
+        } else {
+            console.error('Error during template compilation:', error);
+        }
+        return '';
     }
-
-    return result || '';
 }
 
 

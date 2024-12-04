@@ -1,0 +1,13 @@
+interface {{functionName}}Props {
+    id: number;
+    children: React.ReactNode;
+}
+
+export function {{functionName}}({ id, children }: {{functionName}}Props) {
+    return (
+        <>
+            <h1>{{functionName}} {id}</h1>
+            {children}
+        </>
+    );
+}
