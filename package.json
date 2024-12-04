@@ -10,10 +10,6 @@
     "type": "git",
     "url": "https://github.com/hyxf/coder4"
   },
-  "bugs": {
-    "url": "https://github.com/hyxf/coder4/issues",
-    "email": "formulahendry@gmail.com"
-  },
   "homepage": "https://github.com/hyxf/coder4/blob/main/README.md",
   "engines": {
     "vscode": "^1.95.0"
