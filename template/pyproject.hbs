@@ -1,6 +1,6 @@
 [project]
 name = "{{name}}"
-description = "sbook"
+description = "{{description}}"
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT License" }
@@ -15,32 +15,32 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "click",
-    "pydantic",
-    "types-click"
+{{#each dependencies}}
+    "{{this}}",
+{{/each}}
 ]
 
 [project.optional-dependencies]
 dev = ["build", "twine"]
 
 [project.scripts]
-sbook = 'book.cmdline:create_epub'
+xxx = '{{packageName}}.cmdline:cli'
 
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.dynamic]
-version = { attr = "book.__VERSION__" }
+version = { attr = "{{packageName}}.__VERSION__" }
 
 [tool.setuptools.packages.find]
-include = ["book*"]
+include = ["{{packageName}}*"]
 
 [tool.setuptools]
 include-package-data = true
 
 [tool.setuptools.package-data]
-"book" = ["templates/*", "static/**/*"]
+"{{packageName}}" = ["templates/*", "static/**/*"]
 
 [tool.black]
 line-length = 120

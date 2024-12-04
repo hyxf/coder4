@@ -18,8 +18,11 @@ const pipItems: QuickPickItem[] = [
 
 interface PyProjectData {
     name: string;
+    description: string;
     user: string;
     email: string;
+    packageName: string;
+    dependencies: string[]
 }
 
 export async function buildPyProject(context: ExtensionContext, data: PyProjectData): Promise<string> {

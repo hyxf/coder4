@@ -53,8 +53,15 @@ export class FileController {
             return;
         }
 
+        const deps = await pipDeps([]);
+
         const content = await buildPyProject(context, {
-            name: 'demo', user: 'bill', email: '333@qq.com'
+            name: 'demo',
+            user: 'bill',
+            email: '333@qq.com',
+            dependencies: deps,
+            description: "",
+            packageName: ""
         });
 
         const pyproject = join(folder, `pyproject.toml`);
