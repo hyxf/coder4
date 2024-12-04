@@ -50,7 +50,8 @@ export class DevController {
         }
 
         const name = await window.showInputBox({
-            placeHolder: 'Please enter name (required)',
+            prompt: 'Please enter name (required)',
+            placeHolder: 'name',
             validateInput: input => (input ? '' : 'Name is required'),
         });
 
@@ -59,7 +60,8 @@ export class DevController {
         }
 
         const scope = await window.showInputBox({
-            placeHolder: 'Please enter scope (optional)',
+            prompt: 'Please enter scope (optional)',
+            placeHolder: 'scope',
         });
 
         if (!scope) {
@@ -67,7 +69,8 @@ export class DevController {
         }
 
         const prefix = await window.showInputBox({
-            placeHolder: 'Please enter prefix (required)',
+            prompt: 'Please enter prefix (required)',
+            placeHolder: 'prefix',
             validateInput: input => (input ? '' : 'Prefix is required'),
         });
 
@@ -76,7 +79,8 @@ export class DevController {
         }
 
         const description = await window.showInputBox({
-            placeHolder: 'Please enter description (optional)',
+            prompt: 'Please enter description (optional)',
+            placeHolder: 'description',
         });
 
         if (!description) {

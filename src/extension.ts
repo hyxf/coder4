@@ -44,7 +44,6 @@ export function activate(context: vscode.ExtensionContext) {
 	//---
 	const devController = new DevController(config);
 	const disposableGenerateSnippet = vscode.commands.registerCommand(`${EXTENSION_ID}.generate.snippet`, () => devController.generateSnippet());
-	const disposableGenerateCodestring = vscode.commands.registerCommand(`${EXTENSION_ID}.generate.codestring`, () => devController.generateCodeString());
 	//---
 
 	context.subscriptions.push(
@@ -58,8 +57,7 @@ export function activate(context: vscode.ExtensionContext) {
 		disposablePythonFile,
 		disposablePyProject,
 		disposableRequirements,
-		disposableGenerateSnippet,
-		disposableGenerateCodestring);
+		disposableGenerateSnippet);
 
 	//---
 	const cmdCheckNextJs = `${EXTENSION_ID}.ext.checkNextJs`;
