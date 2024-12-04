@@ -93,7 +93,7 @@
       },
       {
         "command": "coder4.terminal.project",
-        "title": "Create Project",
+        "title": "Create React Project",
         "category": "coder4"
       }
     ],
