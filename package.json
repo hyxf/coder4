@@ -58,11 +58,6 @@
     ],
     "commands": [
       {
-        "command": "coder4.generate.codestring",
-        "title": "Generate CodeString",
-        "category": "coder4"
-      },
-      {
         "command": "coder4.generate.snippet",
         "title": "Generate Snippet",
         "category": "coder4"
@@ -126,18 +121,10 @@
       {
         "id": "coder4.python.submenu",
         "label": "Coder4 Python Generator"
-      },
-      {
-        "id": "coder4.snippet.submenu",
-        "label": "Coder4 Snippet Generator"
       }
     ],
     "menus": {
       "commandPalette": [
-        {
-          "command": "coder4.generate.codestring",
-          "when": "false"
-        },
         {
           "command": "coder4.generate.snippet",
           "when": "false"
@@ -181,19 +168,9 @@
       ],
       "editor/context": [
         {
-          "submenu": "coder4.snippet.submenu",
+          "command": "coder4.generate.snippet",
           "when": "editorHasSelection",
           "group": "0_coder4_snippets"
-        }
-      ],
-      "coder4.snippet.submenu": [
-        {
-          "command": "coder4.generate.codestring",
-          "group": "3_0"
-        },
-        {
-          "command": "coder4.generate.snippet",
-          "group": "3_0"
         }
       ],
       "coder4.python.submenu": [
