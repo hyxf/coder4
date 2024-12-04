@@ -103,7 +103,7 @@ export class DevController {
         env.clipboard.writeText(content);
 
         window.showInformationMessage(
-            'Snippet has been copied into the clipboard, please use the command "Snippets: Configure User Snippets" to paste it.',
+            'Snippet has been copied into the clipboard.',
         );
     }
 }
