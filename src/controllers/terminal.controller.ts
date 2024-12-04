@@ -6,6 +6,10 @@ import { pickItem } from "../helper/dialog.helper";
 export class TerminalController {
     constructor(private readonly config: Config) { }
 
+    async newNodejs(): Promise<void> {
+
+    }
+
     async newProject(): Promise<void> {
         const type = await window.showQuickPick(
             [

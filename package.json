@@ -95,6 +95,11 @@
         "command": "coder4.terminal.project",
         "title": "Create React Project",
         "category": "coder4"
+      },
+      {
+        "command": "coder4.terminal.nodejs",
+        "title": "Create Nodejs Project",
+        "category": "coder4"
       }
     ],
     "submenus": [

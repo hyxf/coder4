@@ -32,6 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const terminalController = new TerminalController(config);
 	const disposableTerminalProject = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.project`, () => terminalController.newProject());
+	const disposableTerminalNodejs = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.nodejs`, () => terminalController.newNodejs());
 
 	//---
 
@@ -51,6 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
 		disposableFileLoading,
 		disposableFilePage,
 		disposableTerminalProject,
+		disposableTerminalNodejs,
 		disposablePythonPackage,
 		disposablePythonFile,
 		disposablePyProject,
