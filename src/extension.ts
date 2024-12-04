@@ -62,23 +62,23 @@ export function activate(context: vscode.ExtensionContext) {
 		disposableGenerateCodestring);
 
 	//---
-	const cmdCheckNodeJs = `${EXTENSION_ID}.ext.checkNodeJs`;
-	vscode.commands.registerCommand(cmdCheckNodeJs, async () => {
+	const cmdCheckNextJs = `${EXTENSION_ID}.ext.checkNextJs`;
+	vscode.commands.registerCommand(cmdCheckNextJs, async () => {
 		const workspaceFolders = vscode.workspace.workspaceFolders;
 
 		if (workspaceFolders) {
 			const rootFolder = workspaceFolders[0].uri.fsPath;
-			const targetPackageJson = path.join(rootFolder, 'package.json');
+			const nextConfig = path.join(rootFolder, 'next.config.ts');
 
-			const fileExists = await vscode.workspace.fs.stat(vscode.Uri.file(targetPackageJson)).then(
+			const fileExists = await vscode.workspace.fs.stat(vscode.Uri.file(nextConfig)).then(
 				() => true,
 				() => false
 			);
 
-			vscode.commands.executeCommand('setContext', 'isNodeJsProject', fileExists);
+			vscode.commands.executeCommand('setContext', 'isNextJsProject', fileExists);
 		}
 	});
-	vscode.commands.executeCommand(cmdCheckNodeJs);
+	vscode.commands.executeCommand(cmdCheckNextJs);
 	//---
 	const cmdCheckPython = `${EXTENSION_ID}.ext.checkPython`;
 	vscode.commands.registerCommand(cmdCheckPython, async () => {
