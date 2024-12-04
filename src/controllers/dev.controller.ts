@@ -25,7 +25,7 @@ export class DevController {
 
         const snippetString = selection
             .split(/\r?\n/)
-            .map(line => line.replace(/\$(?![\d{]|TM_)/g, '\\$').replace(spaces, '\t'))
+            .map(line => line.replace(/\$(?![\d{]|TM_)/g, '\\$').replace(spaces, '\t'));
 
         env.clipboard.writeText(`${snippetString}`);
 
