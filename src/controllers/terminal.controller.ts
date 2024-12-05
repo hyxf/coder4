@@ -60,9 +60,9 @@ export class TerminalController {
     async newReactProject(): Promise<void> {
         const projectType = await window.showQuickPick(
             [
-                { label: 'create-remix-app', description: 'Create a new project with Create Remix App' },
-                { label: 'create-next-app', description: 'Create a new project with Create Next App' },
-                { label: 'create-vite-app', description: 'Create a new project with React and Vite' },
+                { label: 'create-remix-app', description: 'Create Remix App' },
+                { label: 'create-next-app', description: 'Create Next App' },
+                { label: 'create-vite-app', description: 'Create vite App' },
             ],
             { placeHolder: 'What kind of project do you want to create?' }
         );
