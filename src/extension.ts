@@ -5,6 +5,10 @@ import { FileController } from './controllers/file.controller';
 import { TerminalController } from './controllers/terminal.controller';
 import { EXTENSION_ID } from './helper/config.helper';
 
+/**
+ * activate
+ * @param context 
+ */
 export function activate(context: vscode.ExtensionContext) {
 
 	console.log('Your extension "coder4" is now active!');
@@ -99,4 +103,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.executeCommand(cmdCheckPython);
 }
 
+/**
+ * deactivate
+ */
 export function deactivate() { }

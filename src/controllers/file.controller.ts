@@ -38,6 +38,11 @@ export class FileController {
 
     constructor() { }
 
+    /**
+     * edit requirements
+     * @param path 
+     * @returns 
+     */
     async editRequirements(path?: Uri): Promise<void> {
         const rootPath = path?.fsPath || "";
 
@@ -63,7 +68,7 @@ export class FileController {
     }
 
     /**
-     * update deps
+     * update dependencies
      * @param configContent 
      * @param newDependencies 
      * @returns 
@@ -74,6 +79,11 @@ export class FileController {
         return configContent.replace(dependenciesRegex, newDependenciesContent);
     }
 
+    /**
+     * edit pyproject.toml
+     * @param path 
+     * @returns 
+     */
     async editPyProject(path?: Uri): Promise<void> {
         const rootPath = path?.fsPath || "";
 
@@ -100,6 +110,10 @@ export class FileController {
         }
     }
 
+    /**
+     * new requirements
+     * @returns 
+     */
     async newRequirements(): Promise<void> {
         let folder: string = '';
 

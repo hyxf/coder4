@@ -2,6 +2,9 @@ import { window } from "vscode";
 import { runCommand } from "../helper/command.helper";
 import { pickItem } from "../helper/dialog.helper";
 
+/**
+ * Terminal Controller
+ */
 export class TerminalController {
     constructor() { }
 
