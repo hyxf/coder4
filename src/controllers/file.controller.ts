@@ -39,6 +39,30 @@ export class FileController {
 
     constructor(private readonly config: Config) { }
 
+    async editRequirements(path?: Uri): Promise<void> {
+        const rootPath = path?.fsPath || "";
+
+        if (!rootPath) {
+            return;
+        }
+        try {
+            const fileContent = await fs.promises.readFile(rootPath, 'utf-8');
+
+            const deps = fileContent
+                .split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+
+            const modifyDeps = await pipDeps(deps);
+
+            if (modifyDeps && modifyDeps.length > 0) {
+                await fs.promises.writeFile(rootPath, modifyDeps.join('\n'));
+            }
+        } catch (error) {
+            await showError(`${error instanceof Error ? error.message : error}`);
+        }
+    }
+
     /**
      * update deps
      * @param configContent 

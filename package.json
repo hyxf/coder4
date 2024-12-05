@@ -68,6 +68,11 @@
         "category": "coder4"
       },
       {
+        "command": "coder4.python.context.requirements.txt",
+        "title": "Edit requirements.txt dependencies",
+        "category": "coder4"
+      },
+      {
         "command": "coder4.python.pyproject.toml",
         "title": "Create pyproject.toml",
         "category": "coder4"
@@ -157,6 +162,14 @@
         {
           "command": "coder4.file.page",
           "when": "false"
+        },
+        {
+          "command": "coder4.python.context.pyproject.toml",
+          "when": "false"
+        },
+        {
+          "command": "coder4.python.context.requirements.txt",
+          "when": "false"
         }
       ],
       "explorer/context": [
@@ -174,6 +187,11 @@
           "command": "coder4.python.context.pyproject.toml",
           "group": "2_workspace",
           "when": "explorerViewletFocus && !explorerResourceIsFolder && resourceFilename == 'pyproject.toml'"
+        },
+        {
+          "command": "coder4.python.context.requirements.txt",
+          "group": "2_workspace",
+          "when": "explorerViewletFocus && !explorerResourceIsFolder && resourceFilename == 'requirements.txt'"
         }
       ],
       "editor/context": [
