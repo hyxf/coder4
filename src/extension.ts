@@ -7,7 +7,7 @@ import { EXTENSION_ID } from './helper/config.helper';
 
 export function activate(context: vscode.ExtensionContext) {
 
-	console.log('Congratulations, your extension "coder4" is now active!');
+	console.log('Your extension "coder4" is now active!');
 
 	const fileController = new FileController();
 
@@ -15,12 +15,6 @@ export function activate(context: vscode.ExtensionContext) {
 	const disposableFileComponent = vscode.commands.registerCommand(`${EXTENSION_ID}.file.component`, (args) => fileController.newComponent(context, args));
 	const disposableFileLoading = vscode.commands.registerCommand(`${EXTENSION_ID}.file.loading`, (args) => fileController.newLoading(context, args));
 	const disposableFilePage = vscode.commands.registerCommand(`${EXTENSION_ID}.file.page`, (args) => fileController.newPage(context, args));
-
-	const terminalController = new TerminalController();
-	const disposableTerminalProject = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.project`, () => terminalController.newReactProject());
-	const disposableTerminalNodejs = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.nodejs`, () => terminalController.newNodejsProject());
-
-	//---
 
 	const disposablePythonPackage = vscode.commands.registerCommand(`${EXTENSION_ID}.python.package`, (args) => fileController.newPythonPackage(args));
 	const disposablePythonFile = vscode.commands.registerCommand(`${EXTENSION_ID}.python.file`, (args) => fileController.newPythonFile(args));
@@ -30,8 +24,18 @@ export function activate(context: vscode.ExtensionContext) {
 	const disposableContextRequirements = vscode.commands.registerCommand(`${EXTENSION_ID}.python.context.requirements.txt`, (args) => fileController.editRequirements(args));
 
 	//---
+
+	const terminalController = new TerminalController();
+
+	const disposableTerminalProject = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.project`, () => terminalController.newReactProject());
+	const disposableTerminalNodejs = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.nodejs`, () => terminalController.newNodejsProject());
+
+	//---
+
 	const devController = new DevController();
+
 	const disposableGenerateSnippet = vscode.commands.registerCommand(`${EXTENSION_ID}.generate.snippet`, () => devController.generateSnippet());
+
 	//---
 
 	context.subscriptions.push(
@@ -50,6 +54,7 @@ export function activate(context: vscode.ExtensionContext) {
 		disposableGenerateSnippet);
 
 	//---
+
 	const cmdCheckNextJs = `${EXTENSION_ID}.ext.checkNextJs`;
 	vscode.commands.registerCommand(cmdCheckNextJs, async () => {
 		const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -67,7 +72,9 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 	vscode.commands.executeCommand(cmdCheckNextJs);
+
 	//---
+
 	const cmdCheckPython = `${EXTENSION_ID}.ext.checkPython`;
 	vscode.commands.registerCommand(cmdCheckPython, async () => {
 		const workspaceFolders = vscode.workspace.workspaceFolders;
