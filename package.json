@@ -35,16 +35,18 @@
         "title": "Coder4",
         "properties": {
           "coder4.snippet.scope": {
-            "type": "string",
-            "default": "none",
-            "enum": [
+            "type": "array",
+            "default": [
               "none",
               "python",
               "typescript",
               "typescriptreact"
             ],
-            "scope": "resource",
-            "description": "Set the default snippet's Scope"
+            "description": "Set the snippet's Scope",
+            "items": {
+              "type": "string",
+              "description": "Each item in the array should be a string"
+            }
           }
         }
       }

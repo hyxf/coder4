@@ -1,4 +1,5 @@
 import { env, window } from "vscode";
+import { scopeList } from "../helper/config.helper";
 
 /**
  * dev controller
@@ -35,8 +36,10 @@ export class DevController {
             return;
         }
 
+        const scopes = await scopeList();
+
         const scope = await window.showQuickPick(
-            ['none', 'python', 'typescript', 'typescriptreact'],
+            scopes,
             { placeHolder: 'Which scope do you want to use?' }
         );
 
