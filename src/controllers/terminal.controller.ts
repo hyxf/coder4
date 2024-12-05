@@ -1,4 +1,4 @@
-import { window } from "vscode";
+import { window, workspace } from "vscode";
 import { runCommand } from "../helper/command.helper";
 import { pickItem } from "../helper/dialog.helper";
 
@@ -63,6 +63,7 @@ export class TerminalController {
                 { label: 'create-remix-app', description: 'Create Remix App' },
                 { label: 'create-next-app', description: 'Create Next App' },
                 { label: 'create-vite-app', description: 'Create vite App' },
+                { label: 'create-docusaurus', description: 'Create docusaurus' },
             ],
             { placeHolder: 'What kind of project do you want to create?' }
         );
@@ -143,6 +144,21 @@ export class TerminalController {
                         command = `pnpm create remix@latest .`;
                         break;
                 }
+                break;
+
+            case 'create-docusaurus':
+                let folder: string = '';
+                let workspaceName: string = '';
+
+                if (workspace.workspaceFolders) {
+                    folder = workspace.workspaceFolders[0].uri.fsPath;
+                    workspaceName = workspace.workspaceFolders[0].name;
+                } else {
+                    window.showErrorMessage('Workspace folders not exist!');
+                    return;
+                }
+
+                command = `npx create-docusaurus@latest --typescript --skip-install --package-manager=${packageManager} ${workspaceName} classic ${folder}`;
                 break;
         }
 
