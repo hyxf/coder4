@@ -34,24 +34,17 @@
       {
         "title": "Coder4",
         "properties": {
-          "coder4.files.extension": {
+          "coder4.snippet.scope": {
             "type": "string",
-            "default": "py",
+            "default": "none",
             "enum": [
-              "py",
-              "js",
-              "jsx",
-              "ts",
-              "tsx"
+              "none",
+              "python",
+              "typescript",
+              "typescriptreact"
             ],
             "scope": "resource",
-            "description": "Sets the default extension for the generated files"
-          },
-          "coder4.tabSize": {
-            "type": "integer",
-            "default": 4,
-            "scope": "resource",
-            "description": "Sets the tabSize"
+            "description": "Set the default snippet's Scope"
           }
         }
       }

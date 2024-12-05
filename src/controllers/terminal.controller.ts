@@ -1,10 +1,9 @@
 import { window } from "vscode";
-import { Config } from "../configs/config";
 import { runCommand } from "../helper/command.helper";
 import { pickItem } from "../helper/dialog.helper";
 
 export class TerminalController {
-    constructor(private readonly config: Config) { }
+    constructor() { }
 
     /**
      * new nodejs project

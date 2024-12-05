@@ -1,11 +1,10 @@
 import { env, window } from "vscode";
-import { Config } from "../configs/config";
 
 /**
  * dev controller
  */
 export class DevController {
-    constructor(private readonly config: Config) { }
+    constructor() { }
 
     /**
      * generate snippet

@@ -4,7 +4,6 @@ import * as os from 'os';
 import { join } from 'path';
 import { ExtensionContext, Uri, window, workspace } from 'vscode';
 import { z } from "zod";
-import { Config } from "../configs/config";
 import { getName, getPath, showError } from "../helper/dialog.helper";
 import { getRelativePath, saveFile, saveFileWithContent } from "../helper/filesystem.helper";
 import { dasherize } from '../helper/inflector.helper';
@@ -37,7 +36,7 @@ type PyProjectToml = z.infer<typeof PyProjectSchema>;
  */
 export class FileController {
 
-    constructor(private readonly config: Config) { }
+    constructor() { }
 
     async editRequirements(path?: Uri): Promise<void> {
         const rootPath = path?.fsPath || "";

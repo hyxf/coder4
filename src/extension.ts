@@ -1,36 +1,22 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
-import { Config, EXTENSION_ID } from './configs/config';
 import { DevController } from './controllers/dev.controller';
 import { FileController } from './controllers/file.controller';
 import { TerminalController } from './controllers/terminal.controller';
+import { EXTENSION_ID } from './helper/config.helper';
 
 export function activate(context: vscode.ExtensionContext) {
 
 	console.log('Congratulations, your extension "coder4" is now active!');
 
-	let resource:
-		| vscode.Uri
-		| vscode.TextDocument
-		| vscode.WorkspaceFolder
-		| undefined;
-
-	if (vscode.workspace.workspaceFolders) {
-		resource = vscode.workspace.workspaceFolders[0];
-	}
-
-	const config = new Config(
-		vscode.workspace.getConfiguration(EXTENSION_ID, resource),
-	);
-
-	const fileController = new FileController(config);
+	const fileController = new FileController();
 
 	const disposableFileLayout = vscode.commands.registerCommand(`${EXTENSION_ID}.file.layout`, (args) => fileController.newLayout(context, args));
 	const disposableFileComponent = vscode.commands.registerCommand(`${EXTENSION_ID}.file.component`, (args) => fileController.newComponent(context, args));
 	const disposableFileLoading = vscode.commands.registerCommand(`${EXTENSION_ID}.file.loading`, (args) => fileController.newLoading(context, args));
 	const disposableFilePage = vscode.commands.registerCommand(`${EXTENSION_ID}.file.page`, (args) => fileController.newPage(context, args));
 
-	const terminalController = new TerminalController(config);
+	const terminalController = new TerminalController();
 	const disposableTerminalProject = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.project`, () => terminalController.newReactProject());
 	const disposableTerminalNodejs = vscode.commands.registerCommand(`${EXTENSION_ID}.terminal.nodejs`, () => terminalController.newNodejsProject());
 
@@ -44,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const disposableContextRequirements = vscode.commands.registerCommand(`${EXTENSION_ID}.python.context.requirements.txt`, (args) => fileController.editRequirements(args));
 
 	//---
-	const devController = new DevController(config);
+	const devController = new DevController();
 	const disposableGenerateSnippet = vscode.commands.registerCommand(`${EXTENSION_ID}.generate.snippet`, () => devController.generateSnippet());
 	//---
 
