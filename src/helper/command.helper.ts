@@ -1,6 +1,10 @@
 import { window } from 'vscode';
 
-
+/**
+ * run command
+ * @param title 
+ * @param command 
+ */
 export const runCommand = async (
     title: string,
     command: string,

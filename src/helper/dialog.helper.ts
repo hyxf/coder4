@@ -1,6 +1,14 @@
 import { window } from 'vscode';
 
 
+/**
+ * get path
+ * @param prompt 
+ * @param placeHolder 
+ * @param currentPath 
+ * @param validate 
+ * @returns 
+ */
 export const getPath = async (
     prompt: string,
     placeHolder: string,
@@ -15,6 +23,13 @@ export const getPath = async (
     });
 };
 
+/**
+ * get name
+ * @param prompt 
+ * @param placeHolder 
+ * @param validate 
+ * @returns 
+ */
 export const getName = async (
     prompt: string,
     placeHolder: string,
@@ -27,6 +42,12 @@ export const getName = async (
     });
 };
 
+/**
+ * pick item
+ * @param items 
+ * @param placeHolder 
+ * @returns 
+ */
 export const pickItem = async (
     items: string[],
     placeHolder: string,
@@ -36,14 +57,26 @@ export const pickItem = async (
     });
 };
 
-export const showMessage = async (message: string): Promise<void> => {
-    window.showInformationMessage(message);
-};
-
+/**
+ * show error
+ * @param message 
+ */
 export const showError = async (message: string): Promise<void> => {
     window.showErrorMessage(message);
 };
 
+/**
+ * TODO: unuse
+ * @param message 
+ */
+export const showMessage = async (message: string): Promise<void> => {
+    window.showInformationMessage(message);
+};
+
+/**
+ * TODO: unuse
+ * @param message 
+ */
 export const showWarning = async (message: string): Promise<void> => {
     window.showWarningMessage(message);
 };

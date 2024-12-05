@@ -4,7 +4,9 @@ import { join } from 'path';
 import { ExtensionContext, QuickPickItem, window } from "vscode";
 
 
-
+/**
+ * pip items
+ */
 const pipItems: QuickPickItem[] = [
     { label: 'click', description: 'Python composable command line interface toolkit', picked: true },
     { label: 'requests', description: 'A simple, yet elegant, HTTP library.' },
