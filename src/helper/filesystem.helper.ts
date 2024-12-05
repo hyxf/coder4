@@ -21,12 +21,22 @@ export const directoryMap = async (
     return workspace.findFiles(includes, exclude, options?.maxResults);
 };
 
+/**
+ * create dir
+ * @param folder 
+ * @param path 
+ */
 export const createDir = async (folder: string, path: string): Promise<void> => {
     const file = join(folder, path);
     const newDirectoryUri = Uri.file(file);
     await workspace.fs.createDirectory(newDirectoryUri);
 };
 
+/**
+ * save file with content
+ * @param file 
+ * @param data 
+ */
 export const saveFileWithContent = async (file: string, data: string): Promise<void> => {
     if (!existsSync(dirname(file))) {
         mkdirSync(dirname(file), { recursive: true });
@@ -59,6 +69,13 @@ export const saveFileWithContent = async (file: string, data: string): Promise<v
     });
 };
 
+/**
+ * save file
+ * @param path 
+ * @param filename 
+ * @param data 
+ * @returns 
+ */
 export const saveFile = async (
     path: string,
     filename: string,
@@ -77,7 +94,11 @@ export const saveFile = async (
     await saveFileWithContent(file, data);
 };
 
-
+/**
+ * delete files
+ * @param path 
+ * @param options 
+ */
 export const deleteFiles = async (
     path: string,
     options?: { recursive?: boolean; useTrash?: boolean },
@@ -95,7 +116,12 @@ export const deleteFiles = async (
     });
 };
 
-
+/**
+ * TODO: unuse
+ * @param path 
+ * @param options 
+ * @returns 
+ */
 export const getFilenames = async (
     path: string,
     options?: { extensions?: string[]; ignore?: string[]; maxResults?: number },
@@ -135,7 +161,12 @@ export const octalPermissions = async (
     return file?.toString(8);
 };
 
-
+/**
+ * TODO: unuse
+ * @param file1 
+ * @param file2 
+ * @returns 
+ */
 export const sameFile = async (
     file1: string,
     file2: string,
@@ -155,21 +186,38 @@ export const setRealpath = async (path: string): Promise<Uri | FileStat> => {
             .then((filename) => filename.uri);
 };
 
-
+/**
+ * Relative Path
+ * @param path 
+ * @returns 
+ */
 export const getRelativePath = async (path: string): Promise<string> => {
     return workspace.asRelativePath(path);
 };
 
+/**
+ * real path
+ * @param path 
+ * @returns 
+ */
 export const getRealpath = async (path: string): Promise<string> => {
     return Uri.file(path).fsPath;
 };
 
-
+/**
+ * TODO: unuse
+ * @param path 
+ * @returns 
+ */
 export const exists = async (path: string): Promise<boolean> => {
     return existsSync(path);
 };
 
-
+/**
+ * is dir
+ * @param path 
+ * @returns 
+ */
 export const isDirectory = async (path: string): Promise<boolean> => {
     return (await workspace.fs.stat(Uri.file(path))).type === 2;
 };
