@@ -39,6 +39,18 @@ export class FileController {
 
     constructor(private readonly config: Config) { }
 
+    /**
+     * update deps
+     * @param configContent 
+     * @param newDependencies 
+     * @returns 
+     */
+    private updateDependencies(configContent: string, newDependencies: string[]): string {
+        const dependenciesRegex = /dependencies\s*=\s*\[\s*(?:".*?",?\s*)*\]/;
+        const newDependenciesContent = `dependencies = [\n    ${newDependencies.map(dep => `"${dep}"`).join(",\n    ")}\n]`;
+        return configContent.replace(dependenciesRegex, newDependenciesContent);
+    }
+
     async editPyProject(path?: Uri): Promise<void> {
         const rootPath = path?.fsPath || "";
 
@@ -49,12 +61,16 @@ export class FileController {
             const { parse } = await import("smol-toml");
 
             const fileContent = await fs.promises.readFile(rootPath, 'utf-8');
+
             const parsedData = parse(fileContent);
             const pyProject: PyProjectToml = PyProjectSchema.parse(parsedData);
             const deps = pyProject.project.dependencies;
+
             const modifyDeps = await pipDeps(deps);
+
             if (modifyDeps && modifyDeps.length > 0) {
-                console.log('');
+                const modifyContent = this.updateDependencies(fileContent, modifyDeps);
+                await fs.promises.writeFile(rootPath, modifyContent);
             }
         } catch (error) {
             await showError(`${error instanceof Error ? error.message : error}`);

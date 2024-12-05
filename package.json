@@ -64,7 +64,7 @@
       },
       {
         "command": "coder4.python.context.pyproject.toml",
-        "title": "Edit pyproject.toml",
+        "title": "Edit pyproject.toml dependencies",
         "category": "coder4"
       },
       {
