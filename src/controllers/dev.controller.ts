@@ -73,7 +73,7 @@ export class DevController {
 
         // add double quotes around each line apart from the last one
         const newSnippet = separatedSnippet.map((line, index) => {
-            return index === separatedSnippetLength - 1 ? `"${line}"` : `"${line}",`;
+            return index === separatedSnippetLength - 1 ? `"${line}$0"` : `"${line}",`;
         });
 
         let content = `
