@@ -119,29 +119,31 @@ export class TerminalController {
                 break;
 
             case 'create-next-app':
+                const options = '--yes';
                 switch (packageManager) {
                     case 'npm':
-                        command = `npx create-next-app@latest .`;
+                        command = `npx create-next-app@latest . ${options}`;
                         break;
                     case 'yarn':
-                        command = `yarn create next-app .`;
+                        command = `yarn create next-app . ${options}`;
                         break;
                     case 'pnpm':
-                        command = `pnpm create next-app .`;
+                        command = `pnpm create next-app . ${options}`;
                         break;
                 }
                 break;
 
             case 'create-remix-app':
+                const optionsRemix = '--yes';
                 switch (packageManager) {
                     case 'npm':
-                        command = `npx create-remix@latest .`;
+                        command = `npx create-remix@latest . ${optionsRemix}`;
                         break;
                     case 'yarn':
-                        command = `yarn create remix .`;
+                        command = `yarn create remix . ${optionsRemix}`;
                         break;
                     case 'pnpm':
-                        command = `pnpm create remix@latest .`;
+                        command = `pnpm create remix@latest . ${optionsRemix}`;
                         break;
                 }
                 break;
@@ -158,7 +160,7 @@ export class TerminalController {
                     return;
                 }
 
-                command = `npx create-docusaurus@latest --typescript --skip-install --package-manager=${packageManager} ${workspaceName} classic ${folder}`;
+                command = `yarn create docusaurus --typescript --package-manager=${packageManager} ${workspaceName} classic ${folder}`;
                 break;
         }
 
