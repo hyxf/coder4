@@ -1,12 +1,15 @@
+import * as fs from 'fs';
 import { access } from 'fs';
 import * as os from 'os';
 import { join } from 'path';
 import { ExtensionContext, Uri, window, workspace } from 'vscode';
+import { z } from "zod";
 import { Config } from "../configs/config";
-import { getName, getPath } from "../helper/dialog.helper";
+import { getName, getPath, showError } from "../helper/dialog.helper";
 import { getRelativePath, saveFile, saveFileWithContent } from "../helper/filesystem.helper";
 import { dasherize } from '../helper/inflector.helper';
 import { pipDeps, templateCompile } from '../helper/project.helper';
+
 
 interface PyProjectData {
     name: string;
@@ -21,12 +24,42 @@ interface ComponentData {
     functionName: string;
 }
 
+const PyProjectSchema = z.object({
+    project: z.object({
+        dependencies: z.array(z.string()),
+    }),
+});
+
+type PyProjectToml = z.infer<typeof PyProjectSchema>;
+
 /**
  * file controller
  */
 export class FileController {
 
     constructor(private readonly config: Config) { }
+
+    async editPyProject(path?: Uri): Promise<void> {
+        const rootPath = path?.fsPath || "";
+
+        if (!rootPath) {
+            return;
+        }
+        try {
+            const { parse } = await import("smol-toml");
+
+            const fileContent = await fs.promises.readFile(rootPath, 'utf-8');
+            const parsedData = parse(fileContent);
+            const pyProject: PyProjectToml = PyProjectSchema.parse(parsedData);
+            const deps = pyProject.project.dependencies;
+            const modifyDeps = await pipDeps(deps);
+            if (modifyDeps && modifyDeps.length > 0) {
+                console.log('');
+            }
+        } catch (error) {
+            await showError(`${error instanceof Error ? error.message : error}`);
+        }
+    }
 
     async newRequirements(): Promise<void> {
         let folder: string = '';
