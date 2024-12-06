@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as vscode from 'vscode';
 import { DevController } from './controllers/dev.controller';
 import { FileController } from './controllers/file.controller';
+import { LibController } from './controllers/lib.controller';
 import { TerminalController } from './controllers/terminal.controller';
 import { EXTENSION_ID } from './helper/config.helper';
 
@@ -22,10 +23,15 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const disposablePythonPackage = vscode.commands.registerCommand(`${EXTENSION_ID}.python.package`, (args) => fileController.newPythonPackage(args));
 	const disposablePythonFile = vscode.commands.registerCommand(`${EXTENSION_ID}.python.file`, (args) => fileController.newPythonFile(args));
-	const disposablePyProject = vscode.commands.registerCommand(`${EXTENSION_ID}.python.pyproject.toml`, () => fileController.newPyProject(context));
-	const disposableRequirements = vscode.commands.registerCommand(`${EXTENSION_ID}.python.requirements.txt`, () => fileController.newRequirements());
-	const disposableContextPyProject = vscode.commands.registerCommand(`${EXTENSION_ID}.python.context.pyproject.toml`, (args) => fileController.editPyProject(args));
-	const disposableContextRequirements = vscode.commands.registerCommand(`${EXTENSION_ID}.python.context.requirements.txt`, (args) => fileController.editRequirements(args));
+
+	//---
+
+	const libController = new LibController();
+
+	const disposableContextPyProject = vscode.commands.registerCommand(`${EXTENSION_ID}.python.context.pyproject.toml`, (args) => libController.editPyProject(args));
+	const disposableContextRequirements = vscode.commands.registerCommand(`${EXTENSION_ID}.python.context.requirements.txt`, (args) => libController.editRequirements(args));
+	const disposablePyProject = vscode.commands.registerCommand(`${EXTENSION_ID}.python.pyproject.toml`, () => libController.newPyProject(context));
+	const disposableRequirements = vscode.commands.registerCommand(`${EXTENSION_ID}.python.requirements.txt`, () => libController.newRequirements());
 
 	//---
 
