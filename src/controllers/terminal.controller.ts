@@ -1,6 +1,6 @@
-import { window, workspace } from "vscode";
+import { window } from "vscode";
 import { runCommand } from "../helper/command.helper";
-import { pickItem } from "../helper/dialog.helper";
+import { getName, pickItem, showError, showMessage, showWarning } from "../helper/dialog.helper";
 
 /**
  * Terminal Controller
@@ -150,32 +150,46 @@ export class TerminalController {
 
             case 'create-docusaurus':
                 let folder: string = '';
-                let workspaceName: string = '';
 
-                if (workspace.workspaceFolders) {
-                    folder = workspace.workspaceFolders[0].uri.fsPath;
-                    workspaceName = workspace.workspaceFolders[0].name;
+                const rootDir = await window.showOpenDialog({
+                    canSelectFiles: false,
+                    canSelectFolders: true,
+                    canSelectMany: false,
+                    openLabel: 'Select Root Dir'
+                });
+
+                if (rootDir && rootDir.length > 0) {
+                    folder = rootDir[0].fsPath;
                 } else {
-                    window.showErrorMessage('Workspace folders not exist!');
+                    await showWarning('No folder selected');
                     return;
                 }
 
-                command = `yarn create docusaurus --typescript --package-manager=${packageManager} ${workspaceName} classic ${folder}`;
+                const docusaurusName = await getName('Docusaurus Name', 'name', (name: string) => {
+                    if (!/^[A-Z][A-Za-z]{2,}$/.test(name)) {
+                        return 'Invalid format! Entity names MUST be declared in PascalCase.';
+                    }
+                    return;
+                });
+
+                if (!docusaurusName) {
+                    return;
+                }
+
+                command = `yarn create docusaurus --typescript --package-manager=${packageManager} ${docusaurusName} classic ${folder}`;
                 break;
         }
 
         if (!command) {
-            window.showErrorMessage("Failed to construct the command.");
+            await showError('Failed to construct the command.');
             return;
         }
 
         try {
             await runCommand(projectType.label, command);
-            window.showInformationMessage(`${projectType.label} successfully!`);
+            await showMessage(`${projectType.label} successfully!`);
         } catch (error) {
-            window.showErrorMessage(
-                `Failed to ${projectType.label} project: ${error instanceof Error ? error.message : error}`
-            );
+            await showError(`Failed to ${projectType.label} project: ${error instanceof Error ? error.message : error}`);
         }
     }
 
