@@ -131,6 +131,14 @@
     "menus": {
       "commandPalette": [
         {
+          "command": "coder4.python.pyproject.toml",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
+          "command": "coder4.python.requirements.txt",
+          "when": "workspaceFolderCount > 0"
+        },
+        {
           "command": "coder4.terminal.nodejs",
           "when": "workspaceFolderCount > 0"
         },
