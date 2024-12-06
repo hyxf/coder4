@@ -4,6 +4,7 @@ import * as os from 'os';
 import { join } from 'path';
 import { ExtensionContext, Uri, window, workspace } from 'vscode';
 import { z } from "zod";
+import { runCommand } from '../helper/command.helper';
 import { showError } from "../helper/dialog.helper";
 import { saveFileWithContent } from "../helper/filesystem.helper";
 import { depsPick, npmDevItems, npmItems, pipItems, templateCompile } from '../helper/project.helper';
@@ -61,12 +62,27 @@ export class LibController {
                 return;
             }
 
+            let command = '';
+
             if (modifyDeps && modifyDeps.length > 0) {
 
             }
 
             if (modifyDevDeps && modifyDevDeps.length > 0) {
 
+            }
+
+            if (!command) {
+                await showError('Failed to construct the command.');
+                return;
+            }
+
+            const label = 'Add library';
+
+            try {
+                await runCommand(label, command);
+            } catch (error) {
+                await showError(`Failed to ${label} project: ${error instanceof Error ? error.message : error}`);
             }
         } catch (error) {
             await showError(`${error instanceof Error ? error.message : error}`);
