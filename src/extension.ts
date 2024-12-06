@@ -28,6 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const libController = new LibController();
 
+	const disposableContextPackageJson = vscode.commands.registerCommand(`${EXTENSION_ID}.nodejs.context.package.json`, (args) => libController.editPackageJson(args));
 	const disposableContextPyProject = vscode.commands.registerCommand(`${EXTENSION_ID}.python.context.pyproject.toml`, (args) => libController.editPyProject(args));
 	const disposableContextRequirements = vscode.commands.registerCommand(`${EXTENSION_ID}.python.context.requirements.txt`, (args) => libController.editRequirements(args));
 	const disposablePyProject = vscode.commands.registerCommand(`${EXTENSION_ID}.python.pyproject.toml`, () => libController.newPyProject(context));
@@ -60,6 +61,7 @@ export function activate(context: vscode.ExtensionContext) {
 		disposablePyProject,
 		disposableContextPyProject,
 		disposableContextRequirements,
+		disposableContextPackageJson,
 		disposableRequirements,
 		disposableGenerateSnippet);
 

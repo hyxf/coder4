@@ -58,6 +58,11 @@
         "category": "coder4"
       },
       {
+        "command": "coder4.nodejs.context.package.json",
+        "title": "Edit package.json dependencies",
+        "category": "coder4"
+      },
+      {
         "command": "coder4.python.context.pyproject.toml",
         "title": "Edit pyproject.toml dependencies",
         "category": "coder4"
@@ -181,6 +186,10 @@
         {
           "command": "coder4.python.context.requirements.txt",
           "when": "false"
+        },
+        {
+          "command": "coder4.nodejs.context.package.json",
+          "when": "false"
         }
       ],
       "explorer/context": [
@@ -203,6 +212,11 @@
           "command": "coder4.python.context.requirements.txt",
           "group": "2_workspace",
           "when": "explorerViewletFocus && !explorerResourceIsFolder && resourceFilename == 'requirements.txt'"
+        },
+        {
+          "command": "coder4.nodejs.context.package.json",
+          "group": "2_workspace",
+          "when": "explorerViewletFocus && !explorerResourceIsFolder && resourceFilename == 'package.json'"
         }
       ],
       "editor/context": [

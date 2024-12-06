@@ -17,6 +17,12 @@ interface PyProjectData {
     dependencies: string[]
 }
 
+interface PackageJsonData {
+    name: string;
+    dependencies: Array<[string, string]>;
+    devDependencies: Array<[string, string]>;
+}
+
 const PyProjectSchema = z.object({
     project: z.object({
         dependencies: z.array(z.string()),
@@ -28,6 +34,31 @@ type PyProjectToml = z.infer<typeof PyProjectSchema>;
 export class LibController {
 
     constructor() { }
+
+    async editPackageJson(path?: Uri): Promise<void> {
+        const rootPath = path?.fsPath || "";
+
+        if (!rootPath) {
+            return;
+        }
+        try {
+            const fileContent = await fs.promises.readFile(rootPath, 'utf-8');
+
+            const packageJson: PackageJsonData = JSON.parse(fileContent) as PackageJsonData;
+
+            const deps = packageJson.dependencies.map((dep) => {
+                return dep[0];
+            });
+
+            const modifyDeps = await pipDeps(deps);
+
+            if (modifyDeps && modifyDeps.length > 0) {
+                await fs.promises.writeFile(rootPath, modifyDeps.join('\n'));
+            }
+        } catch (error) {
+            await showError(`${error instanceof Error ? error.message : error}`);
+        }
+    }
 
     /**
      * edit requirements
