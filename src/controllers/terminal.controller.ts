@@ -199,8 +199,10 @@ export class TerminalController {
      */
     async openFolder(folderToOpen: string): Promise<void> {
         try {
-            const folderUri = Uri.file(folderToOpen);
-            await commands.executeCommand('revealFileInOS', folderUri);
+            setTimeout(() => {
+                const folderUri = Uri.file(folderToOpen);
+                commands.executeCommand('revealFileInOS', folderUri);
+            }, 200);
         } catch (err) {
             await showError(`Failed to open folder: ${folderToOpen}`);
         }
