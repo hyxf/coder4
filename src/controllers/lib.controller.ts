@@ -4,7 +4,6 @@ import * as os from 'os';
 import { join } from 'path';
 import { ExtensionContext, Uri, window, workspace } from 'vscode';
 import { z } from "zod";
-import { runCommand } from '../helper/command.helper';
 import { showError } from "../helper/dialog.helper";
 import { saveFileWithContent } from "../helper/filesystem.helper";
 import { depsPick, npmDevItems, npmItems, pipItems, templateCompile } from '../helper/project.helper';
@@ -39,77 +38,138 @@ export class LibController {
     async editPackageJson(path?: Uri): Promise<void> {
         const rootPath = path?.fsPath || "";
 
+        // If the path is invalid, notify the user and exit
         if (!rootPath) {
             await showError('Invalid path: Please provide a valid path to the package.json file.');
             return;
         }
 
         try {
+            // Read and parse the content of the package.json file
             const fileContent = await fs.promises.readFile(rootPath, 'utf-8');
             const packageJson = PackageJsonSchema.parse(JSON.parse(fileContent));
 
+            // Get the list of current dependencies and devDependencies
             const deps = Object.keys(packageJson.dependencies ?? {});
             const devDeps = Object.keys(packageJson.devDependencies ?? {});
 
+            // Allow the user to pick dependencies to modify
             const modifyDeps = await depsPick(deps, npmItems, 'Dependencies pick');
             const modifyDevDeps = await depsPick(devDeps, npmDevItems, 'DevDependencies pick');
 
+            // Prompt the user to select a package manager
             const packageManager = await window.showQuickPick(
                 ['yarn', 'npm', 'pnpm'],
                 { placeHolder: 'Which package manager do you want to use?' }
             );
 
+            // If no package manager is selected, notify the user and exit
             if (!packageManager) {
                 await showError('No package manager selected. Operation canceled.');
                 return;
             }
 
-            const command = this.buildInstallCommand(packageManager, modifyDeps, modifyDevDeps);
+            // Calculate the added and removed dependencies
+            const { added: addedDeps, removed: removedDeps } = this.diffDependencies(deps, modifyDeps);
+            const { added: addedDevDeps, removed: removedDevDeps } = this.diffDependencies(devDeps, modifyDevDeps);
 
+            // Build the install and uninstall command based on changes
+            const command = this.buildInstallAndUninstallCommand(packageManager, {
+                addedDeps,
+                removedDeps,
+                addedDevDeps,
+                removedDevDeps,
+            });
+
+            // If no changes are detected, notify the user and exit
             if (!command) {
-                await showError('No dependencies selected for installation. Nothing to execute.');
+                await showError('No changes detected. Nothing to execute.');
                 return;
             }
 
-            const label = 'Add library';
-            await runCommand(label, command);
+            // Execute the constructed command
+            const label = 'Update dependencies';
+            // await runCommand(label, command);
         } catch (error) {
+            // Catch and display any error that occurs during the process
             const message = error instanceof Error ? error.message : String(error);
             await showError(`Error editing package.json: ${message}`);
         }
     }
 
-    buildInstallCommand(packageManager: string, deps: string[], devDeps: string[]): string {
+    /**
+     * Compare original and modified dependency lists to identify added and removed items
+     * @param original Original list of dependencies
+     * @param modified Modified list of dependencies
+     * @returns An object containing added and removed dependencies
+     */
+    diffDependencies(original: string[], modified: string[]): { added: string[]; removed: string[] } {
+        const added = modified.filter(dep => !original.includes(dep));
+        const removed = original.filter(dep => !modified.includes(dep));
+        return { added, removed };
+    }
+
+    /**
+     * Build a command to install and uninstall dependencies based on changes
+     * @param packageManager Selected package manager (e.g., npm, yarn, pnpm)
+     * @param changes Dependency changes (added/removed dependencies and devDependencies)
+     * @returns A combined command string for installation and uninstallation
+     */
+    buildInstallAndUninstallCommand(
+        packageManager: string,
+        changes: { addedDeps: string[]; removedDeps: string[]; addedDevDeps: string[]; removedDevDeps: string[] }
+    ): string {
         const commands: string[] = [];
 
-        if (deps.length > 0) {
-            const depsCommand = this.buildSingleCommand(packageManager, deps, false);
-            commands.push(depsCommand);
+        // Build commands for added dependencies
+        if (changes.addedDeps.length > 0) {
+            commands.push(this.buildSingleCommand(packageManager, changes.addedDeps, false, 'install'));
+        }
+        if (changes.addedDevDeps.length > 0) {
+            commands.push(this.buildSingleCommand(packageManager, changes.addedDevDeps, true, 'install'));
         }
 
-        if (devDeps.length > 0) {
-            const devDepsCommand = this.buildSingleCommand(packageManager, devDeps, true);
-            commands.push(devDepsCommand);
+        // Build commands for removed dependencies
+        if (changes.removedDeps.length > 0) {
+            commands.push(this.buildSingleCommand(packageManager, changes.removedDeps, false, 'uninstall'));
+        }
+        if (changes.removedDevDeps.length > 0) {
+            commands.push(this.buildSingleCommand(packageManager, changes.removedDevDeps, true, 'uninstall'));
         }
 
+        // Combine all commands into a single string with '&&'
         return commands.join(' && ');
     }
 
-    buildSingleCommand(packageManager: string, dependencies: string[], isDev: boolean): string {
-        const devFlag = isDev ? (packageManager === 'npm' ? '--save-dev' : '-D') : '';
+    /**
+     * Build a single command for installing or uninstalling dependencies
+     * @param packageManager Selected package manager (e.g., npm, yarn, pnpm)
+     * @param dependencies List of dependencies to install or uninstall
+     * @param isDev Whether the dependencies are devDependencies
+     * @param action The action to perform ('install' or 'uninstall')
+     * @returns A single command string
+     */
+    buildSingleCommand(
+        packageManager: string,
+        dependencies: string[],
+        isDev: boolean,
+        action: 'install' | 'uninstall'
+    ): string {
+        // Determine the dev flag based on the action and package manager
+        const devFlag = isDev && action === 'install' ? (packageManager === 'npm' ? '--save-dev' : '-D') : '';
         const depsList = dependencies.join(' ');
 
+        // Construct the command based on the package manager
         switch (packageManager) {
             case 'yarn':
-                return `yarn add ${devFlag} ${depsList}`;
+                return `yarn ${action} ${devFlag} ${depsList}`;
             case 'pnpm':
-                return `pnpm add ${devFlag} ${depsList}`;
+                return `pnpm ${action} ${devFlag} ${depsList}`;
             case 'npm':
             default:
-                return `npm install ${devFlag} ${depsList}`;
+                return `npm ${action} ${devFlag} ${depsList}`;
         }
     }
-
 
     /**
      * edit requirements
