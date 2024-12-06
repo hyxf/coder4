@@ -1,4 +1,4 @@
-## 0.0.8 (2024-12-06)
+## 0.0.9 (2024-12-06)
 
 ### Added
 * Edit package.json dependencies

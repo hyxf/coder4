@@ -2,7 +2,7 @@
   "name": "vscode-coder4",
   "displayName": "Coder4",
   "description": "Code Assistant for VS Code",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "license": "MIT",
   "publisher": "billchiu",
   "icon": "media/icon.png",
