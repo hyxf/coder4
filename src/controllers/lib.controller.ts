@@ -17,11 +17,11 @@ interface PyProjectData {
     dependencies: string[]
 }
 
-interface PackageJsonData {
-    name: string;
-    dependencies: Array<[string, string]>;
-    devDependencies: Array<[string, string]>;
-}
+const PackageJsonSchema = z.object({
+    name: z.string(),
+    devDependencies: z.record(z.string()).optional(),
+    dependencies: z.record(z.string()).optional()
+});
 
 const PyProjectSchema = z.object({
     project: z.object({
@@ -44,13 +44,12 @@ export class LibController {
         try {
             const fileContent = await fs.promises.readFile(rootPath, 'utf-8');
 
-            const packageJson: PackageJsonData = JSON.parse(fileContent) as PackageJsonData;
+            const packageJson = PackageJsonSchema.parse(JSON.parse(fileContent));
 
-            const deps = packageJson.dependencies.map((dep) => {
-                return dep[0];
-            });
+            const deps = Object.keys(packageJson.dependencies ?? []);
+            const devDeps = Object.keys(packageJson.devDependencies ?? []);
 
-            const modifyDeps = await pipDeps(deps);
+            const modifyDeps = await pipDeps([]);
 
             if (modifyDeps && modifyDeps.length > 0) {
                 await fs.promises.writeFile(rootPath, modifyDeps.join('\n'));
