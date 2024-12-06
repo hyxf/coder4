@@ -40,15 +40,16 @@ export class LibController {
         const rootPath = path?.fsPath || "";
 
         if (!rootPath) {
+            await showError('Invalid path: Please provide a valid path to the package.json file.');
             return;
         }
+
         try {
             const fileContent = await fs.promises.readFile(rootPath, 'utf-8');
-
             const packageJson = PackageJsonSchema.parse(JSON.parse(fileContent));
 
-            const deps = Object.keys(packageJson.dependencies ?? []);
-            const devDeps = Object.keys(packageJson.devDependencies ?? []);
+            const deps = Object.keys(packageJson.dependencies ?? {});
+            const devDeps = Object.keys(packageJson.devDependencies ?? {});
 
             const modifyDeps = await depsPick(deps, npmItems, 'Dependencies pick');
             const modifyDevDeps = await depsPick(devDeps, npmDevItems, 'DevDependencies pick');
@@ -59,35 +60,56 @@ export class LibController {
             );
 
             if (!packageManager) {
+                await showError('No package manager selected. Operation canceled.');
                 return;
             }
 
-            let command = '';
-
-            if (modifyDeps && modifyDeps.length > 0) {
-
-            }
-
-            if (modifyDevDeps && modifyDevDeps.length > 0) {
-
-            }
+            const command = this.buildInstallCommand(packageManager, modifyDeps, modifyDevDeps);
 
             if (!command) {
-                await showError('Failed to construct the command.');
+                await showError('No dependencies selected for installation. Nothing to execute.');
                 return;
             }
 
             const label = 'Add library';
-
-            try {
-                await runCommand(label, command);
-            } catch (error) {
-                await showError(`Failed to ${label} project: ${error instanceof Error ? error.message : error}`);
-            }
+            await runCommand(label, command);
         } catch (error) {
-            await showError(`${error instanceof Error ? error.message : error}`);
+            const message = error instanceof Error ? error.message : String(error);
+            await showError(`Error editing package.json: ${message}`);
         }
     }
+
+    buildInstallCommand(packageManager: string, deps: string[], devDeps: string[]): string {
+        const commands: string[] = [];
+
+        if (deps.length > 0) {
+            const depsCommand = this.buildSingleCommand(packageManager, deps, false);
+            commands.push(depsCommand);
+        }
+
+        if (devDeps.length > 0) {
+            const devDepsCommand = this.buildSingleCommand(packageManager, devDeps, true);
+            commands.push(devDepsCommand);
+        }
+
+        return commands.join(' && ');
+    }
+
+    buildSingleCommand(packageManager: string, dependencies: string[], isDev: boolean): string {
+        const devFlag = isDev ? (packageManager === 'npm' ? '--save-dev' : '-D') : '';
+        const depsList = dependencies.join(' ');
+
+        switch (packageManager) {
+            case 'yarn':
+                return `yarn add ${devFlag} ${depsList}`;
+            case 'pnpm':
+                return `pnpm add ${devFlag} ${depsList}`;
+            case 'npm':
+            default:
+                return `npm install ${devFlag} ${depsList}`;
+        }
+    }
+
 
     /**
      * edit requirements
