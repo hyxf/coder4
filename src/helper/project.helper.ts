@@ -69,7 +69,7 @@ export async function templateCompile<T = any>(context: ExtensionContext, name: 
  * @param deps 
  * @returns 
  */
-export async function depsPick(deps: string[], defaultItems: QuickPickItem[], title: string = 'Library Pick', placeHolder: string = 'Select one or more libraries'): Promise<string[]> {
+export async function depsPick(deps: string[], defaultItems: QuickPickItem[], title: string = 'Library Pick', placeHolder: string = 'Select one or more libraries'): Promise<string[] | undefined> {
     const additionalDeps: QuickPickItem[] = deps
         .filter(dep => !defaultItems.some(item => item.label === dep))
         .map(dep => ({ label: dep, description: 'User-defined dependency', picked: true }));
@@ -87,6 +87,10 @@ export async function depsPick(deps: string[], defaultItems: QuickPickItem[], ti
         placeHolder,
         title
     });
+
+    if (!selectedItems) {
+        return undefined;
+    }
 
     let selectedLabels: string[] = [];
     if (selectedItems) {

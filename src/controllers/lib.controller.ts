@@ -60,7 +60,14 @@ export class LibController {
 
             // Allow the user to pick dependencies to modify
             const modifyDeps = await depsPick(deps, npmItems, 'Dependencies pick');
+            if (!modifyDeps) {
+                return;
+            }
+
             const modifyDevDeps = await depsPick(devDeps, npmDevItems, 'DevDependencies pick');
+            if (!modifyDevDeps) {
+                return;
+            }
 
             // Prompt the user to select a package manager
             const packageManager = await window.showQuickPick(
@@ -264,6 +271,9 @@ export class LibController {
         }
 
         const deps = await depsPick([], pipItems);
+        if (!deps) {
+            return;
+        }
 
         const content = deps.join("\n");
 
@@ -339,6 +349,9 @@ export class LibController {
         }
 
         const dependencies = await depsPick([], pipItems);
+        if (!dependencies) {
+            return;
+        }
 
         const user = os.userInfo().username;
 
