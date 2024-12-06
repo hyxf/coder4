@@ -121,20 +121,20 @@ export class LibController {
     ): string {
         const commands: string[] = [];
 
-        // Build commands for added dependencies
-        if (changes.addedDeps.length > 0) {
-            commands.push(this.buildSingleCommand(packageManager, changes.addedDeps, false, 'install'));
-        }
-        if (changes.addedDevDeps.length > 0) {
-            commands.push(this.buildSingleCommand(packageManager, changes.addedDevDeps, true, 'install'));
-        }
-
         // Build commands for removed dependencies
         if (changes.removedDeps.length > 0) {
             commands.push(this.buildSingleCommand(packageManager, changes.removedDeps, false, 'uninstall'));
         }
         if (changes.removedDevDeps.length > 0) {
             commands.push(this.buildSingleCommand(packageManager, changes.removedDevDeps, true, 'uninstall'));
+        }
+
+        // Build commands for added dependencies
+        if (changes.addedDeps.length > 0) {
+            commands.push(this.buildSingleCommand(packageManager, changes.addedDeps, false, 'install'));
+        }
+        if (changes.addedDevDeps.length > 0) {
+            commands.push(this.buildSingleCommand(packageManager, changes.addedDevDeps, true, 'install'));
         }
 
         // Combine all commands into a single string with '&&'
