@@ -7,6 +7,7 @@ import { z } from "zod";
 import { showError } from "../helper/dialog.helper";
 import { saveFileWithContent } from "../helper/filesystem.helper";
 import { depsPick, npmDevItems, npmItems, pipItems, templateCompile } from '../helper/project.helper';
+import { runCommand } from '../helper/command.helper';
 
 interface PyProjectData {
     name: string;
@@ -101,7 +102,7 @@ export class LibController {
 
             // Execute the constructed command
             const label = 'Update dependencies';
-            // await runCommand(label, command);
+            await runCommand(label, command);
         } catch (error) {
             // Catch and display any error that occurs during the process
             const message = error instanceof Error ? error.message : String(error);
