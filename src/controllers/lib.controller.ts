@@ -35,6 +35,11 @@ export class LibController {
 
     constructor() { }
 
+    /**
+     * edit package.json
+     * @param path 
+     * @returns 
+     */
     async editPackageJson(path?: Uri): Promise<void> {
         const rootPath = path?.fsPath || "";
 
