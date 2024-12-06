@@ -3,11 +3,10 @@ import * as handlebars from "handlebars";
 import { join } from 'path';
 import { ExtensionContext, QuickPickItem, window } from "vscode";
 
-
 /**
  * pip items
  */
-const pipItems: QuickPickItem[] = [
+export const pipItems: QuickPickItem[] = [
     { label: 'click', description: 'Python composable command line interface toolkit', picked: true },
     { label: 'requests', description: 'A simple, yet elegant, HTTP library.' },
     { label: 'tqdm', description: 'A Fast, Extensible Progress Bar for Python and CLI' },
@@ -15,6 +14,28 @@ const pipItems: QuickPickItem[] = [
     { label: 'Pillow', description: 'Python Imaging Library' },
     { label: 'fastapi', description: 'FastAPI framework, high performance, easy to learn, fast to code, ready for production' },
     { label: 'Flask', description: 'The Python micro framework for building web applications.' },
+];
+
+export const npmItems: QuickPickItem[] = [
+    { label: 'axios', description: 'Promise based HTTP client for the browser and node.js', picked: false },
+    { label: 'zod', description: 'TypeScript-first schema validation with static type inference', picked: false },
+    { label: 'commander', description: 'node.js command-line interfaces made easy', picked: false },
+    { label: 'chalk', description: 'Terminal string styling done right', picked: false },
+    { label: 'fs-extra', description: 'Node.js: extra methods for the fs object like copy(), remove(), mkdirs()', picked: false },
+    { label: 'p-map', description: 'Map over promises concurrently', picked: false },
+    { label: 'react-hook-form', description: 'React Hooks for form state management and validation', picked: false },
+    { label: 'react-query', description: 'Powerful asynchronous state management', picked: false },
+    { label: 'swr', description: 'React Hooks for Data Fetching', picked: false },
+    { label: '@inquirer/prompts', description: 'A collection of common interactive command line user interfaces.', picked: false },
+    { label: '@tanstack/react-table', description: 'Headless UI for building powerful tables & datagrids for TS/JS', picked: false },
+];
+
+export const npmDevItems: QuickPickItem[] = [
+    { label: 'typescript', description: 'TypeScript is a superset of JavaScript that compiles to clean JavaScript output.', picked: false },
+    { label: 'tsx', description: 'TypeScript Execute | The easiest way to run TypeScript in Node.js', picked: false },
+    { label: '@types/node', description: 'The repository for high quality TypeScript type definitions.', picked: false },
+    { label: 'eslint', description: 'Find and fix problems in your JavaScript code.', picked: false },
+    { label: 'vsce', description: 'VS Code Extension Manager', picked: false }
 ];
 
 /**
@@ -44,16 +65,16 @@ export async function templateCompile<T = any>(context: ExtensionContext, name: 
 
 
 /**
- * pip deps
+ * deps Pick
  * @param deps 
  * @returns 
  */
-export async function pipDeps(deps: string[]): Promise<string[]> {
+export async function depsPick(deps: string[], defaultItems: QuickPickItem[], title: string = 'Library Pick', placeHolder: string = 'Select one or more libraries'): Promise<string[]> {
     const additionalDeps: QuickPickItem[] = deps
-        .filter(dep => !pipItems.some(item => item.label === dep))
+        .filter(dep => !defaultItems.some(item => item.label === dep))
         .map(dep => ({ label: dep, description: 'User-defined dependency', picked: true }));
 
-    const allItems = [...pipItems, ...additionalDeps];
+    const allItems = [...defaultItems, ...additionalDeps];
 
     allItems.forEach(item => {
         if (deps.includes(item.label)) {
@@ -63,7 +84,8 @@ export async function pipDeps(deps: string[]): Promise<string[]> {
 
     const selectedItems = await window.showQuickPick(allItems, {
         canPickMany: true,
-        placeHolder: 'Select one or more libraries',
+        placeHolder,
+        title
     });
 
     let selectedLabels: string[] = [];

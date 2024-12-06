@@ -6,7 +6,7 @@ import { ExtensionContext, Uri, window, workspace } from 'vscode';
 import { z } from "zod";
 import { showError } from "../helper/dialog.helper";
 import { saveFileWithContent } from "../helper/filesystem.helper";
-import { pipDeps, templateCompile } from '../helper/project.helper';
+import { depsPick, npmDevItems, npmItems, pipItems, templateCompile } from '../helper/project.helper';
 
 interface PyProjectData {
     name: string;
@@ -49,10 +49,24 @@ export class LibController {
             const deps = Object.keys(packageJson.dependencies ?? []);
             const devDeps = Object.keys(packageJson.devDependencies ?? []);
 
-            const modifyDeps = await pipDeps([]);
+            const modifyDeps = await depsPick(deps, npmItems, 'Dependencies pick');
+            const modifyDevDeps = await depsPick(devDeps, npmDevItems, 'DevDependencies pick');
+
+            const packageManager = await window.showQuickPick(
+                ['yarn', 'npm', 'pnpm'],
+                { placeHolder: 'Which package manager do you want to use?' }
+            );
+
+            if (!packageManager) {
+                return;
+            }
 
             if (modifyDeps && modifyDeps.length > 0) {
-                await fs.promises.writeFile(rootPath, modifyDeps.join('\n'));
+
+            }
+
+            if (modifyDevDeps && modifyDevDeps.length > 0) {
+
             }
         } catch (error) {
             await showError(`${error instanceof Error ? error.message : error}`);
@@ -78,7 +92,7 @@ export class LibController {
                 .map(line => line.trim())
                 .filter(line => line.length > 0);
 
-            const modifyDeps = await pipDeps(deps);
+            const modifyDeps = await depsPick(deps, pipItems);
 
             if (modifyDeps && modifyDeps.length > 0) {
                 await fs.promises.writeFile(rootPath, modifyDeps.join('\n'));
@@ -120,7 +134,7 @@ export class LibController {
             const pyProject: PyProjectToml = PyProjectSchema.parse(parsedData);
             const deps = pyProject.project.dependencies;
 
-            const modifyDeps = await pipDeps(deps);
+            const modifyDeps = await depsPick(deps, pipItems);
 
             if (modifyDeps && modifyDeps.length > 0) {
                 const modifyContent = this.updateDependencies(fileContent, modifyDeps);
@@ -146,7 +160,7 @@ export class LibController {
             return;
         }
 
-        const deps = await pipDeps([]);
+        const deps = await depsPick([], pipItems);
 
         const content = deps.join("\n");
 
@@ -221,7 +235,7 @@ export class LibController {
             return;
         }
 
-        const dependencies = await pipDeps([]);
+        const dependencies = await depsPick([], pipItems);
 
         const user = os.userInfo().username;
 
