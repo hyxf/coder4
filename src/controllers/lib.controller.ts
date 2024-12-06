@@ -171,15 +171,17 @@ export class LibController {
         const devFlag = isDev && action === 'install' ? (packageManager === 'npm' ? '--save-dev' : '-D') : '';
         const depsList = dependencies.join(' ');
 
+        const execAction = action === "install" ? (packageManager === 'npm' ? 'install' : 'add') : (packageManager === 'npm' ? 'uninstall' : 'remove');
+
         // Construct the command based on the package manager
         switch (packageManager) {
             case 'yarn':
-                return `yarn ${action} ${devFlag} ${depsList}`;
+                return `yarn ${execAction} ${devFlag} ${depsList}`;
             case 'pnpm':
-                return `pnpm ${action} ${devFlag} ${depsList}`;
+                return `pnpm ${execAction} ${devFlag} ${depsList}`;
             case 'npm':
             default:
-                return `npm ${action} ${devFlag} ${depsList}`;
+                return `npm ${execAction} ${devFlag} ${depsList}`;
         }
     }
 
