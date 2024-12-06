@@ -112,4 +112,6 @@ export function activate(context: vscode.ExtensionContext) {
 /**
  * deactivate
  */
-export function deactivate() { }
+export function deactivate() {
+	console.log('Your extension "coder4" is now deactivate!');
+}
