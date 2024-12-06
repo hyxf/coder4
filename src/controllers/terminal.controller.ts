@@ -1,6 +1,6 @@
-import { window } from "vscode";
+import { Uri, commands, window } from "vscode";
 import { runCommand } from "../helper/command.helper";
-import { getName, pickItem, showError, showMessage, showWarning } from "../helper/dialog.helper";
+import { getName, pickItem, showError, showWarning } from "../helper/dialog.helper";
 
 /**
  * Terminal Controller
@@ -60,8 +60,8 @@ export class TerminalController {
     async newReactProject(): Promise<void> {
         const projectType = await window.showQuickPick(
             [
-                { label: 'create-remix-app', description: 'Create Remix App' },
                 { label: 'create-next-app', description: 'Create Next App' },
+                { label: 'create-remix-app', description: 'Create Remix App' },
                 { label: 'create-vite-app', description: 'Create vite App' },
                 { label: 'create-docusaurus', description: 'Create docusaurus' },
             ],
@@ -73,7 +73,7 @@ export class TerminalController {
         }
 
         const packageManager = await window.showQuickPick(
-            ['npm', 'yarn', 'pnpm'],
+            ['yarn', 'npm', 'pnpm'],
             { placeHolder: 'Which package manager do you want to use?' }
         );
 
@@ -85,10 +85,10 @@ export class TerminalController {
         if (projectType.label === 'create-vite-app') {
             const viteChoice = await window.showQuickPick(
                 [
-                    { label: 'react', description: 'React and Vite' },
                     { label: 'react-ts', description: 'React, TypeScript and Vite' },
-                    { label: 'react-swc', description: 'React, SWC and Vite' },
+                    { label: 'react', description: 'React and Vite' },
                     { label: 'react-swc-ts', description: 'React, TypeScript, SWC and Vite' },
+                    { label: 'react-swc', description: 'React, SWC and Vite' },
                 ],
                 { placeHolder: 'What kind of Vite template do you want to use?' }
             );
@@ -166,7 +166,7 @@ export class TerminalController {
                 }
 
                 const docusaurusName = await getName('Docusaurus Name', 'name', (name: string) => {
-                    if (!/^[A-Z][A-Za-z]{2,}$/.test(name)) {
+                    if (!/^[A-Za-z]{2,}$/.test(name)) {
                         return 'Invalid format! Entity names MUST be declared in PascalCase.';
                     }
                     return;
@@ -176,7 +176,7 @@ export class TerminalController {
                     return;
                 }
 
-                command = `yarn create docusaurus --typescript --package-manager=${packageManager} ${docusaurusName} classic ${folder}`;
+                command = `yarn create docusaurus --typescript --skip-install --package-manager=${packageManager} ${docusaurusName} classic ${folder}`;
                 break;
         }
 
@@ -187,9 +187,22 @@ export class TerminalController {
 
         try {
             await runCommand(projectType.label, command);
-            await showMessage(`${projectType.label} successfully!`);
+            // await showMessage(`${projectType.label} successfully!`);
         } catch (error) {
             await showError(`Failed to ${projectType.label} project: ${error instanceof Error ? error.message : error}`);
+        }
+    }
+
+    /**
+     * open folder
+     * @param folderToOpen 
+     */
+    async openFolder(folderToOpen: string): Promise<void> {
+        try {
+            const folderUri = Uri.file(folderToOpen);
+            await commands.executeCommand('revealFileInOS', folderUri);
+        } catch (err) {
+            await showError(`Failed to open folder: ${folderToOpen}`);
         }
     }
 
