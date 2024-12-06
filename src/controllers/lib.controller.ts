@@ -103,7 +103,7 @@ export class LibController {
      * @param modified Modified list of dependencies
      * @returns An object containing added and removed dependencies
      */
-    diffDependencies(original: string[], modified: string[]): { added: string[]; removed: string[] } {
+    private diffDependencies(original: string[], modified: string[]): { added: string[]; removed: string[] } {
         const added = modified.filter(dep => !original.includes(dep));
         const removed = original.filter(dep => !modified.includes(dep));
         return { added, removed };
@@ -115,7 +115,7 @@ export class LibController {
      * @param changes Dependency changes (added/removed dependencies and devDependencies)
      * @returns A combined command string for installation and uninstallation
      */
-    buildInstallAndUninstallCommand(
+    private buildInstallAndUninstallCommand(
         packageManager: string,
         changes: { addedDeps: string[]; removedDeps: string[]; addedDevDeps: string[]; removedDevDeps: string[] }
     ): string {
@@ -149,7 +149,7 @@ export class LibController {
      * @param action The action to perform ('install' or 'uninstall')
      * @returns A single command string
      */
-    buildSingleCommand(
+    private buildSingleCommand(
         packageManager: string,
         dependencies: string[],
         isDev: boolean,
