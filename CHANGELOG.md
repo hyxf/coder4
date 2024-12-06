@@ -4,7 +4,7 @@
 * Edit package.json dependencies
 
 ### Changed
-* None
+* Optimize project generation
 
 ### Fixed
 * None
